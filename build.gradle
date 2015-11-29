@@ -1,0 +1,245 @@
+apply plugin: "java"
+apply plugin: "eclipse-wtp"
+apply plugin: "war"
+apply plugin: "jacoco"
+apply plugin: "findbugs"
+
+
+
+//This is to retrieve jenkins and other environment variables.
+ext.env = System.getenv()
+
+// Re-defines main and test source sets to HIC defaults
+sourceSets {
+	main {
+		java { srcDir 'src/main/java'}
+		resources { srcDir 'src/main/resources'}
+
+		output.classesDir   = "$buildDir/classes"
+		output.resourcesDir = "$buildDir/classes"
+	}
+	test {
+		java { srcDir 'src/test/java'}
+		resources { srcDir 'src/test/resources'}
+	}
+}
+
+
+/*
+ * Reports and Analysis
+ */
+
+findbugs {
+	toolVersion = '3.0.1'
+	ignoreFailures = true
+}
+
+tasks.withType(FindBugs) {
+	reports {
+		/*
+		 * If there is env version info there is a very good chance this is a JENKINS build,
+		 * so we should generate the xml report instead of the html one.
+		 */
+		if(env.VERSION != null && env.VERSION.trim() != ""){
+			xml.enabled = true
+			html.enabled = false
+		} else {
+			xml.enabled = false
+			html.enabled = true
+		}
+	}
+}
+
+//Prevent javadocs creation errors from failing the whole build due to stricter validation in java 8
+if (JavaVersion.current().isJava8Compatible()) {
+	allprojects {
+		tasks.withType(Javadoc) {
+			options.addStringOption('Xdoclint:none', '-quiet')
+		}
+	}
+}
+
+
+//Make sure our projects are built with all debugging on by default.
+compileJava.options.debugOptions.debugLevel = "source,lines,vars"
+compileTestJava.options.debugOptions.debugLevel = "source,lines,vars"
+
+repositories {
+	jcenter()
+	mavenCentral()
+}
+
+war.baseName = "namoolelo"
+
+//war file should be placed into build/dist
+war.destinationDir = file "$buildDir/dist"
+
+
+sourceCompatibility = javaSourceVersion
+targetCompatibility = javaTargetVersion
+
+webAppDirName="src/webapp"
+
+//When building eclipse files make sure to clean up first
+tasks.eclipse.dependsOn(cleanEclipse)
+
+/*
+ * Generate the Version file from The version tag if it exists, otherwise add the current date & time as the version
+ */
+task generateVersionFile(description: 'Generates a version file in classes directory.') << {
+
+	//create version file and path if it doesnt exist
+	ext.outputFile = file("$sourceSets.main.output.classesDir/version")
+	if (!outputFile.isFile()) {
+		outputFile.parentFile.mkdirs()
+		outputFile.createNewFile()
+	}
+
+	if(env.VERSION != null && env.VERSION.trim() != ""){
+		project.version = env.VERSION
+		outputFile.write "$version"
+	} else {
+		outputFile.write "Build Timestamp: "+new Date()
+	}
+}
+
+/*
+ * Eclipse project setup for eclipse task and "import as gradle project" in eclipse IDE
+ */
+
+eclipse {
+
+	classpath {
+		defaultOutputDir = file('build/classes')
+		downloadSources  = true
+
+//		file {
+//			withXml {
+//				def node = it.asNode()
+//				//Modify this only if you are not building for tomcat 7, also why are you not building to tomcat 7?
+//				node.appendNode('classpathentry', [kind: 'con', path:'org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v8.0'])
+//				.appendNode('attributes').appendNode('attribute', [name: 'owner.project.facets', value:'jst.web'])
+//			}
+//		}
+
+	}
+
+	wtp {
+
+		facet {
+			//empties out the current facets and adds only the following
+			facets = []
+			
+			facet type: 'fixed', name: 'jst.java'
+			facet type: 'fixed', name: 'jst.web'
+			facet name: 'jst.java', version: javaTargetVersion
+			facet name: 'jst.web', version: servletVersion
+
+//			file {
+//				withXml {
+//					def node = it.asNode()
+//					node.appendNode('runtime', [name: 'Apache Tomcat v8.0'])
+//				}
+//			}
+
+		}
+	}
+
+}
+
+project.ext {
+	
+}
+
+
+configurations {
+	//Uncomment this to exclude commons-logging, lala requires commons-logging unfortunenelty
+	//all*.exclude group: 'commons-logging', module: 'commons-logging'
+	all*.exclude group: "log4j", module: "log4j"
+}
+
+configurations.all {
+	resolutionStrategy {
+		force 'commons-logging:commons-logging:1.0.4'
+	}
+}
+
+
+dependencies {
+
+	/*
+	 * Testing Libs
+	 */
+	testCompile 'junit:junit:4.+'
+	testCompile "org.springframework:spring-test:$springVersion"
+	testCompile 'org.mockito:mockito-core:1.+'
+	testCompile 'org.hamcrest:hamcrest-core:1.+'
+	testCompile 'org.hamcrest:hamcrest-library:1.+'	
+	testCompile 'com.jayway.jsonpath:json-path:2.+'
+	testCompile 'com.jayway.jsonpath:json-path-assert:2.+'
+	testCompile 'org.dbunit:dbunit:2.+'
+	testCompile 'com.github.springtestdbunit:spring-test-dbunit:1.+'
+	//testCompile 'org.testng:testng:6.8.7'
+
+
+	/*
+	 * Logging
+	 */
+	compile 'org.slf4j:slf4j-api:1.7.+'
+	compile 'org.slf4j:jcl-over-slf4j:1.7.+'
+	compile 'org.apache.logging.log4j:log4j-slf4j-impl:2.2'
+	compile 'org.apache.logging.log4j:log4j-jcl:2.2'
+	compile 'org.apache.logging.log4j:log4j-1.2-api:2.2'
+	runtime 'org.apache.logging.log4j:log4j-web:2.2'
+	
+
+
+	/*
+	 * Core Spring Components
+	 */
+	compile "org.springframework:spring-context:$springVersion"
+	compile "org.springframework:spring-orm:$springVersion"
+	compile "org.springframework:spring-webmvc:$springVersion"
+	
+	/*
+	 * Spring Security
+	 */
+	compile "org.springframework.security:spring-security-web:$springSecurityVersion"
+	compile "org.springframework.security:spring-security-config:$springSecurityVersion"
+	compile "org.aspectj:aspectjweaver:1.+"
+
+	/*
+	 * Hibernate and c3p0 and Database
+	 */
+	compile "org.hibernate:hibernate-core:$hibernateVersion"
+	compile "org.hibernate:hibernate-entitymanager:$hibernateVersion"
+	compile "org.hibernate:hibernate-c3p0:$hibernateVersion"
+	compile "org.hibernate:hibernate-java8:$hibernateVersion"
+	compile "org.hibernate:hibernate-validator:$hibernateValidatorVersion"
+	compile 'javax.el:javax.el-api:2.+'
+	compile 'org.glassfish.web:javax.el:2.+'
+	compile 'org.apache.commons:commons-dbcp2:2.+'
+
+	compile "com.mchange:c3p0:$c3p0Version"
+
+	compile 'mysql:mysql-connector-java:5.1.+'
+
+	compile "org.apache.commons:commons-lang3:3.+"
+	compile "org.projectlombok:lombok:1.16.+"
+
+	compile 'opensymphony:sitemesh:2.4.2'
+	compile 'javax.servlet:jstl:1.2'
+	compile 'javax.transaction:transaction-api:1.1'
+
+	compile 'com.fasterxml.jackson.core:jackson-core:2.5.+'
+	compile 'com.fasterxml.jackson.core:jackson-annotations:2.5.+'
+	compile 'com.fasterxml.jackson.core:jackson-databind:2.5.+'
+
+	//Used for org.apache.log4j.net.SMTPAppender
+	compile 'javax.mail:mail:1.4.+'
+	
+	//Not added to the WAR, but used for compilation
+	providedCompile 'javax.servlet:javax.servlet-api:3.0.1'
+	providedCompile 'javax.servlet.jsp:javax.servlet.jsp-api:2.2.1'
+
+}

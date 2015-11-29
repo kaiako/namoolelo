@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd
+       http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.1.xsd">
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">	
+        <property name="driverClassName" value="${database.driverClassName}"/>
+        <property name="url" value="${database.url}"/>
+        <property name="username" value="${database.username}"/>
+        <property name="password" value="${database.password}"/>
+    </bean>
+	
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">      
+    	<property name="dataSource" ref="dataSource"/>  
+        <property name="hibernateProperties">
+            <props>            
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+                <prop key="hibernate.show_sql">${hibernate.showSql:false}</prop>
+                
+                <!-- NEVER EVER HAVE THIS LINE ENABLED IN PROD -->
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl:update}</prop>
+                
+                <prop key="hibernate.c3p0.min_size">${hibernate.c3p0.minSize:3}</prop>
+                <prop key="hibernate.c3p0.max_size">${hibernate.c3p0.maxSize:5}</prop>
+                <prop key="hibernate.c3p0.timeout">${hibernate.c3p0.timeout:1800}</prop>
+                <prop key="hibernate.c3p0.max_statements">${hibernate.c3p0.maxStatements:50}</prop>
+                <prop key="hibernate.c3p0.testConnectionOnCheckin">${hibernate.c3p0.testOnCheckin:true}</prop>
+                <prop key="hibernate.c3p0.automaticTestTable">c3p0_test_table</prop>
+                <prop key="hibernate.c3p0.idleConnectionTestPeriod">${hibernate.c3p0.idleTestPeriod:60}</prop>
+
+            </props>
+        </property>
+        
+        <property name="packagesToScan" value="com.namoolelo.domain"/>
+                
+    </bean>
+
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+       
+    <tx:annotation-driven />
+    
+    <!-- PersistenceExceptionTranslationPostProcessor needed to catch and translate DB exceptions when not extending HibernateDaoSupport -->
+    <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
+    
+</beans>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+
+  <Appenders>
+  
+    <Console name="console" target="SYSTEM_OUT">
+      <PatternLayout pattern="[%d{MM/dd/yy HH:mm:ss}]%-5p:%-40c{4}:%m%n"/>
+    </Console>
+    
+    <RollingRandomAccessFile name="file" 
+           fileName="${sys:catalina.base}/logs/baseWebapp.log" 
+        filePattern="${sys:catalina.base}/logs/baseWebapp.log.%d{yyyy-MM-dd}">
+        
+      <PatternLayout>
+        <Pattern>[%d{MM/dd/yy HH:mm:ss} %p] %c: %m%n</Pattern>
+      </PatternLayout>
+      
+      <Policies>
+        <TimeBasedTriggeringPolicy />
+      </Policies>
+    </RollingRandomAccessFile>
+    
+    <SMTP name="errorEmailer" 
+        subject="(TEST)BaseWebapp Error" 
+        to="no-reply@ehawaii.gov" 
+        from="info@ehawaii.gov" 
+        smtpHost="mail.ehawaii.gov" 
+        smtpPort="25" 
+        bufferSize="512">
+        
+      <PatternLayout>
+        <Pattern>[%d] %p [%c]: %l - %m%n</Pattern>
+      </PatternLayout>
+      
+      <Filters>
+        <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+      </Filters>
+      
+    </SMTP>
+    
+  </Appenders>
+  
+  <Loggers>
+  
+    <Logger name="gov.ehawaii" level="debug" >
+        <appender-ref ref="console"/>
+    </Logger>
+    
+    <Logger name="org.hibernate" level="info" />
+    
+    <Logger name="org.springframework" level="info" />
+ 
+    <Root level="info">
+      <AppenderRef ref="console"/>
+      <AppenderRef ref="file"/>
+      <AppenderRef ref="errorEmailer"/>
+    </Root>
+    
+  </Loggers>
+  
+</Configuration>
