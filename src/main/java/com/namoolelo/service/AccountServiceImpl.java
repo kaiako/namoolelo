@@ -16,6 +16,11 @@ public class AccountServiceImpl implements AccountService{
 	public Account findByAccountUsername(String username) {
 		return accountDao.findByAccountUsername(username);
 	}
+
+	@Override
+	public Account findAccount(Long accountId) {
+		return accountDao.find(accountId);
+	}
 	
 
 }
