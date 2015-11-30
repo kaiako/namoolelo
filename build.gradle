@@ -200,6 +200,7 @@ dependencies {
 	compile "org.springframework:spring-context:$springVersion"
 	compile "org.springframework:spring-orm:$springVersion"
 	compile "org.springframework:spring-webmvc:$springVersion"
+	compile "org.springframework.hateoas:spring-hateoas:$springHATEOASVersion"
 	
 	/*
 	 * Spring Security

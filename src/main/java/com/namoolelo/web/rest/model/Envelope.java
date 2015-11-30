@@ -1,4 +1,4 @@
-package com.namoolelo.web.model;
+package com.namoolelo.web.rest.model;
 
 import java.io.Serializable;
 import java.util.LinkedHashMap;

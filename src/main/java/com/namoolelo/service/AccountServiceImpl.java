@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 
 import com.namoolelo.dao.AccountDao;
 import com.namoolelo.domain.Account;
+import com.namoolelo.exceptions.AccountExistsException;
+import com.namoolelo.service.util.AccountList;
 
 @Service
 public class AccountServiceImpl implements AccountService{
@@ -20,6 +22,22 @@ public class AccountServiceImpl implements AccountService{
 	@Override
 	public Account findAccount(Long accountId) {
 		return accountDao.find(accountId);
+	}
+
+	@Override
+	public AccountList findAllAccounts() {
+		return new AccountList(accountDao.getAll());
+	}
+
+	@Override
+	public Account createAccount(Account account) {
+        Account foundAccount = accountDao.findByAccountUsername(account.getUsername());
+        if(foundAccount != null)
+        {
+            throw new AccountExistsException();
+        }
+		accountDao.saveOrUpdate(account);
+		return account;
 	}
 	
 

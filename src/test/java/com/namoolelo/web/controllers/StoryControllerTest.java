@@ -17,7 +17,8 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.namoolelo.domain.Story;
 import com.namoolelo.service.StoryService;
-import com.namoolelo.web.filters.JsonResponseFilter;
+import com.namoolelo.web.rest.controllers.StoryController;
+import com.namoolelo.web.rest.filters.JsonResponseFilter;
 
 import java.util.ArrayList;
 

@@ -1,7 +1,7 @@
 package com.namoolelo.service;
 
 import com.namoolelo.domain.Account;
-import com.namoolelo.web.controllers.AccountList;
+import com.namoolelo.service.util.AccountList;
 
 public interface AccountService {
 
@@ -10,5 +10,7 @@ public interface AccountService {
 	Account findAccount(Long accountId);
 
 	AccountList findAllAccounts();
+
+	Account createAccount(Account account);
 
 }

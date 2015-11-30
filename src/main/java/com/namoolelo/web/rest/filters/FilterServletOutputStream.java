@@ -1,4 +1,4 @@
-package com.namoolelo.web.filters;
+package com.namoolelo.web.rest.filters;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;

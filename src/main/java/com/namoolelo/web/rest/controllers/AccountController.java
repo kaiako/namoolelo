@@ -1,4 +1,4 @@
-package com.namoolelo.web.controllers;
+package com.namoolelo.web.rest.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -8,7 +8,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import com.namoolelo.domain.Account;
+import com.namoolelo.exceptions.AccountExistsException;
+import com.namoolelo.exceptions.ConflictException;
 import com.namoolelo.service.AccountService;
+import com.namoolelo.service.util.AccountList;
+import com.namoolelo.web.rest.resources.AccountListResource;
+import com.namoolelo.web.rest.resources.AccountResource;
+import com.namoolelo.web.rest.resources.asm.AccountListResourceAsm;
+import com.namoolelo.web.rest.resources.asm.AccountResourceAsm;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -33,7 +40,7 @@ public class AccountController {
         if(name == null) {
             list = accountService.findAllAccounts();
         } else {
-            Account account = accountService.findByAccountName(name);
+            Account account = accountService.findByAccountUsername(name);
             if(account == null) {
                 list = new AccountList(new ArrayList<Account>());
             } else {

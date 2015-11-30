@@ -1,4 +1,4 @@
-package com.namoolelo.web.controllers;
+package com.namoolelo.web.rest.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.namoolelo.domain.Story;
 import com.namoolelo.service.StoryService;
-import com.namoolelo.web.model.Envelope;
+import com.namoolelo.web.rest.model.Envelope;
 
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;

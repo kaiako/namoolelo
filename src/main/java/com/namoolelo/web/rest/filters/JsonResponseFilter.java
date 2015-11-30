@@ -1,4 +1,4 @@
-package com.namoolelo.web.filters;
+package com.namoolelo.web.rest.filters;
 
 import java.io.IOException;
 
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.namoolelo.web.model.Envelope;
+import com.namoolelo.web.rest.model.Envelope;
 
 import lombok.extern.slf4j.Slf4j;
 
