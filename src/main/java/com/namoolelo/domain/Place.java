@@ -28,5 +28,5 @@ public class Place implements Serializable{
 	@Embedded
 	private Location location;
 	@ManyToOne
-	private Story story;
+	private Moolelo moolelo;
 }

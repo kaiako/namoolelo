@@ -6,7 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import com.namoolelo.dao.StoryDao;
+import com.namoolelo.dao.MooleloDao;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,10 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 public class StoryServiceTest {
 
 	@Mock
-	StoryDao storyDao;
+	MooleloDao storyDao;
 	
 	@InjectMocks
-	StoryServiceImpl storyService;
+	MooleloServiceImpl storyService;
 	
 	@Before
 	public void init(){

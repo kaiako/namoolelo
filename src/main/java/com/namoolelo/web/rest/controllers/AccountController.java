@@ -53,8 +53,7 @@ public class AccountController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<AccountResource> createAccount(
-            @RequestBody AccountResource sentAccount
-    ) {
+            @RequestBody AccountResource sentAccount) {
         try {
             Account createdAccount = accountService.createAccount(sentAccount.toAccount());
             AccountResource res = new AccountResourceAsm().toResource(createdAccount);
