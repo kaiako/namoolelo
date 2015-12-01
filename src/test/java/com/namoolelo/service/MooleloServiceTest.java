@@ -11,10 +11,10 @@ import com.namoolelo.dao.MooleloDao;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class StoryServiceTest {
+public class MooleloServiceTest {
 
 	@Mock
-	MooleloDao storyDao;
+	MooleloDao mooleloDao;
 	
 	@InjectMocks
 	MooleloServiceImpl storyService;
@@ -26,6 +26,6 @@ public class StoryServiceTest {
 	
 	@Test
 	public void test(){
-		log.info("Testing StoryService.....");
+		log.info("Testing MooleloService.....");
 	}
 }

@@ -1,12 +1,11 @@
 package com.namoolelo.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.namoolelo.dao.MooleloDao;
 import com.namoolelo.domain.Moolelo;
+import com.namoolelo.service.util.MooleloList;
 
 @Service
 public class MooleloServiceImpl implements MooleloService {
@@ -15,7 +14,7 @@ public class MooleloServiceImpl implements MooleloService {
 	private MooleloDao mooleloDao;
 
 	@Override
-	public Moolelo getStory(long id) {
+	public Moolelo getMoolelo(long id) {
 		return mooleloDao.find(id);
 	}
 
@@ -30,8 +29,8 @@ public class MooleloServiceImpl implements MooleloService {
 	}
 
 	@Override
-	public List<Moolelo> getAllStories() {
-		return mooleloDao.getAll();
+	public MooleloList getAllMoolelos() {
+		return new MooleloList(mooleloDao.getAll());
 	}
 	
 }

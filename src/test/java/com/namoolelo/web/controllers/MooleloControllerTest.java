@@ -17,6 +17,7 @@ import org.springframework.web.context.WebApplicationContext;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.namoolelo.domain.Moolelo;
 import com.namoolelo.service.MooleloService;
+import com.namoolelo.service.util.MooleloList;
 import com.namoolelo.web.rest.controllers.MooleloController;
 import com.namoolelo.web.rest.filters.JsonResponseFilter;
 
@@ -45,7 +46,8 @@ public class MooleloControllerTest {
  
 	
 	private MockMvc mockMvc;
-	private Moolelo story;
+	private Moolelo moolelo;
+	private MooleloList moolelos;
 	private ArrayList<Moolelo> stories;
 	private String baseUrl;
 	private ObjectMapper mapper = new ObjectMapper();
@@ -58,59 +60,60 @@ public class MooleloControllerTest {
 				.build();
 		controller.setMooleloService(storyService);
 		baseUrl="/rest/story";
-		story = new Moolelo();
-		story.setId((long)1);
-		story.setTitle("Test Story");
-		story.setSummary("This is a test Summary");
-		story.setText("Test TEXT");
-		story.setEstDate("1500s");
-		story.setPlaces(null);
+		moolelo = new Moolelo();
+		moolelo.setId(1L);
+		moolelo.setTitle("Test Story");
+		moolelo.setSummary("This is a test Summary");
+		moolelo.setText("Test TEXT");
+		moolelo.setEstDate("1500s");
+		moolelo.setPlaces(null);
 		stories = new ArrayList<Moolelo>();
-		stories.add(story);
+		stories.add(moolelo);
+		moolelos = new MooleloList(stories);
 	}
 	
 	@Test
 	public void testCreate() throws Exception{
-		String content = mapper.writeValueAsString(story);
+		String content = mapper.writeValueAsString(moolelo);
 		mockMvc.perform(post(baseUrl+"/create")
 			.content(content)
 			.contentType(MediaType.APPLICATION_JSON_VALUE)) 			
-		.andExpect(jsonPath("$.data", is(story.getId().intValue())))
+		.andExpect(jsonPath("$.data", is(moolelo.getId().intValue())))
 		.andDo(print());
 	}
 	
 	@Test
 	public void testList() throws Exception{
-		when(storyService.getAllStories())
-		.thenReturn(stories);
+		when(storyService.getAllMoolelos())
+		.thenReturn(moolelos);
 		mockMvc.perform(get(baseUrl+"/list"))
-		.andExpect(jsonPath("$.data[0].id", is(story.getId().intValue())))
+		.andExpect(jsonPath("$.data[0].id", is(moolelo.getId().intValue())))
 		.andDo(print());
 	}
 	
 	@Test
 	public void testRetrieve() throws Exception {
-		when(storyService.getStory(story.getId()))
-		.thenReturn(story);
-		mockMvc.perform(get(baseUrl+"/"+story.getId()))
-		.andExpect(jsonPath("$.data.id", is(story.getId().intValue())))
+		when(storyService.getMoolelo(moolelo.getId()))
+		.thenReturn(moolelo);
+		mockMvc.perform(get(baseUrl+"/"+moolelo.getId()))
+		.andExpect(jsonPath("$.data.id", is(moolelo.getId().intValue())))
 		.andDo(print());
 	}
 	
 	@Test
 	public void testUpdate() throws Exception{
-		String content = mapper.writeValueAsString(story);
+		String content = mapper.writeValueAsString(moolelo);
 		mockMvc.perform(post(baseUrl+"/2")
 				.content(content)
 				.contentType(MediaType.APPLICATION_JSON_VALUE))
 		.andExpect(jsonPath("$.code", is(403)))
 		.andDo(print());
-		when(storyService.getStory(story.getId()))
-		.thenReturn(story);
-		mockMvc.perform(post(baseUrl+"/"+story.getId())
+		when(storyService.getMoolelo(moolelo.getId()))
+		.thenReturn(moolelo);
+		mockMvc.perform(post(baseUrl+"/"+moolelo.getId())
 				.content(content)
 				.contentType(MediaType.APPLICATION_JSON_VALUE))
-		.andExpect(jsonPath("$.data", is(story.getId().intValue())))
+		.andExpect(jsonPath("$.data", is(moolelo.getId().intValue())))
 		.andDo(print());
 	}
 }

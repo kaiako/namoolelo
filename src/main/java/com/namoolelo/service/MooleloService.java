@@ -1,13 +1,12 @@
 package com.namoolelo.service;
 
-import java.util.List;
-
 import com.namoolelo.domain.Moolelo;
+import com.namoolelo.service.util.MooleloList;
 
 public interface MooleloService {
 
-	Moolelo getStory(long id);
+	Moolelo getMoolelo(long id);
 	void saveOrUpdate(Moolelo moolelo);
 	void delete(Moolelo moolelo);
-	List<Moolelo> getAllStories();
+	MooleloList getAllMoolelos();
 }

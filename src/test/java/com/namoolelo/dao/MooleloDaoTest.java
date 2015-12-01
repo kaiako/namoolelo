@@ -36,7 +36,7 @@ public class MooleloDaoTest {
 	
 	@Test
 	public void testFind(){
-		Moolelo moolelo = mooleloDao.find((long)1);
+		Moolelo moolelo = mooleloDao.find(1L);
 		assertNotNull(moolelo);
 		assertTrue(moolelo.getId() == 1);
 		assertTrue(moolelo.getTitle().equals("Test Mo'olelo 1"));
@@ -54,7 +54,7 @@ public class MooleloDaoTest {
 		int size = mooleloDao.getAll().size();
 		ArrayList<Place> places = new ArrayList<Place>();
 		Place place = new Place();
-		place.setLocation(new Location((float)1.0,(float)1.0));
+		place.setLocation(new Location(1.0F,1.0F));
 		place.setName("Test Save Place");
 		places.add(place);
 		Moolelo moolelo = new Moolelo();
@@ -73,10 +73,10 @@ public class MooleloDaoTest {
 	@Test
 	public void testSaveOrUpdate(){
 		String titleChange = "Test Update Mo'olelo";
-		Moolelo moolelo = mooleloDao.find((long)1);
+		Moolelo moolelo = mooleloDao.find(1L);
 		moolelo.setTitle(titleChange);
 		mooleloDao.saveOrUpdate(moolelo);
-		Moolelo updatedStory = mooleloDao.find((long)1);
+		Moolelo updatedStory = mooleloDao.find(1L);
 		assertTrue(titleChange.equals(updatedStory.getTitle()));
 	}
 

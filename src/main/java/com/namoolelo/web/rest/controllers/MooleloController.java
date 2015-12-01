@@ -34,13 +34,13 @@ public class MooleloController {
 	@RequestMapping(method=RequestMethod.GET)
 	public Envelope getAll(){
 		log.info("Get all Stories");
-		return new Envelope(mooleloService.getAllStories());
+		return new Envelope(mooleloService.getAllMoolelos());
 	}
 	
 	@RequestMapping(value="/{id}",method=RequestMethod.GET)
 	public Envelope getStory(@PathVariable long id){
 		log.info("Get Story with id : "+id);
-		return new Envelope(mooleloService.getStory(id));
+		return new Envelope(mooleloService.getMoolelo(id));
 	}
 	
 	@RequestMapping(value="/{id}",method=RequestMethod.POST)
