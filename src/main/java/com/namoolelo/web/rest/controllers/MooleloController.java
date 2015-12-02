@@ -1,24 +1,23 @@
 package com.namoolelo.web.rest.controllers;
 
-import java.net.URI;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.namoolelo.domain.Moolelo;
-import com.namoolelo.exceptions.AccountExistsException;
-import com.namoolelo.exceptions.ConflictException;
 import com.namoolelo.service.MooleloService;
+import com.namoolelo.service.util.MooleloList;
 import com.namoolelo.web.rest.model.Envelope;
-import com.namoolelo.web.rest.resources.MooleloResource;
-import com.namoolelo.web.rest.resources.asm.MooleloResourceAsm;
+import com.namoolelo.web.rest.resources.MooleloListResource;
+import com.namoolelo.web.rest.resources.asm.MooleloListResourceAsm;
 
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -31,26 +30,21 @@ public class MooleloController {
 	
 	@Autowired
 	private MooleloService mooleloService;
-
-	@RequestMapping(method=RequestMethod.POST)
-	public ResponseEntity<MooleloResource> create(@RequestBody MooleloResource moolelo){
-		log.info("Creating Moolelo " + moolelo.getTitle());
-        try {
-            Moolelo createdMoolelo = mooleloService.createMoolelo(moolelo.toMoolelo());
-            MooleloResource res = new MooleloResourceAsm().toResource(createdMoolelo);
-            HttpHeaders headers = new HttpHeaders();
-            headers.setLocation(URI.create(res.getLink("self").getHref()));
-            return new ResponseEntity<MooleloResource>(res, headers, HttpStatus.CREATED);
-        } catch(AccountExistsException exception) {
-            throw new ConflictException(exception);
-        }
-	}
 	
 	@RequestMapping(method=RequestMethod.GET)
-	public Envelope findAllMoolelos(){
-		log.info("find all Moolelos");
-		return new Envelope(mooleloService.findAllMoolelos());
-	}
+	public ResponseEntity<MooleloListResource> findAllMoolelos(@RequestParam(value="title", required = false) String title) {
+        MooleloList list = null;
+        if(title == null) {
+            list = mooleloService.findAllMoolelos();
+        } else {
+            list = mooleloService.findMoolelosByTitle(title,true);
+            if(list == null) {
+                list = new MooleloList(new ArrayList<Moolelo>());
+            } 
+        }
+        MooleloListResource res = new MooleloListResourceAsm().toResource(list);
+        return new ResponseEntity<MooleloListResource>(res, HttpStatus.OK);
+    }
 	
 	@RequestMapping(value="/{id}",method=RequestMethod.GET)
 	public Envelope getMoolelo(@PathVariable long id){

@@ -1,4 +1,4 @@
-package com.namoolelo.exceptions;
+package com.namoolelo.exceptions.web;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

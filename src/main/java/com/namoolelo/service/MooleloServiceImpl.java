@@ -6,7 +6,6 @@ import org.springframework.util.Assert;
 
 import com.namoolelo.dao.MooleloDao;
 import com.namoolelo.domain.Moolelo;
-import com.namoolelo.exceptions.MooleloExistsException;
 import com.namoolelo.service.util.MooleloList;
 
 @Service
@@ -21,13 +20,8 @@ public class MooleloServiceImpl implements MooleloService {
 	}
 
 	@Override
-	public Moolelo createMoolelo(Moolelo moolelo) throws MooleloExistsException {
-		Assert.notNull(moolelo);
-		if(moolelo.getId() != null){
-			throw new MooleloExistsException();
-		}
-		saveOrUpdate(moolelo);
-		return moolelo;
+	public MooleloList findMoolelosByTitle(String title, boolean includePlaces){
+		return new MooleloList(mooleloDao.findMoolelosByTitle(title,includePlaces));
 	}
 	
 	@Override

@@ -13,4 +13,5 @@ import lombok.Setter;
 public class MooleloListResource extends ResourceSupport{
 	
 	private List<MooleloResource> moolelos = new ArrayList<MooleloResource>();
+
 }

@@ -17,7 +17,8 @@ public class MooleloResourceAsm extends ResourceAssemblerSupport<Moolelo, Moolel
 
 	@Override
 	public MooleloResource toResource(Moolelo moolelo) {
-        MooleloResource res = new MooleloResource(moolelo);
+        MooleloResource res = new MooleloResource();
+        res.setMoolelo(moolelo);
         res.add(linkTo(methodOn(MooleloController.class).getMoolelo(moolelo.getId())).withSelfRel());
         return res;
 	}

@@ -22,21 +22,21 @@
 	</context-param>
 	
 	<!-- FILTERS -->
-	<filter>
-		<filter-name>jsonResponseFilter</filter-name>
-		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-		<init-param>
-			<param-name>targetBeanName</param-name>
-			<param-value>jsonResponseFilter</param-value>
-		</init-param>
-	</filter>
+<!-- 	<filter> -->
+<!-- 		<filter-name>jsonResponseFilter</filter-name> -->
+<!-- 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class> -->
+<!-- 		<init-param> -->
+<!-- 			<param-name>targetBeanName</param-name> -->
+<!-- 			<param-value>jsonResponseFilter</param-value> -->
+<!-- 		</init-param> -->
+<!-- 	</filter> -->
 	
-	<filter-mapping>
-		<filter-name>jsonResponseFilter</filter-name>
-		<servlet-name>spring</servlet-name>
-		<dispatcher>REQUEST</dispatcher>
-		<dispatcher>ASYNC</dispatcher>
-	</filter-mapping>
+<!-- 	<filter-mapping> -->
+<!-- 		<filter-name>jsonResponseFilter</filter-name> -->
+<!-- 		<servlet-name>spring</servlet-name> -->
+<!-- 		<dispatcher>REQUEST</dispatcher> -->
+<!-- 		<dispatcher>ASYNC</dispatcher> -->
+<!-- 	</filter-mapping> -->
 	
 	<!-- LISTENERS -->
 	<!-- Creates the Spring Container shared by all Servlets and Filters -->

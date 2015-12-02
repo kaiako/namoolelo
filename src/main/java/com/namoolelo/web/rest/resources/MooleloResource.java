@@ -21,7 +21,7 @@ public class MooleloResource extends ResourceSupport{
 	private String estDate;
 	private List<Place> places;
 
-	public MooleloResource(Moolelo moolelo){
+	public void setMoolelo(Moolelo moolelo){	
 		this.rid = moolelo.getId();
 		this.title = moolelo.getTitle();
 		this.text = moolelo.getText();
@@ -29,6 +29,8 @@ public class MooleloResource extends ResourceSupport{
 		this.estDate = moolelo.getEstDate();
 		this.places = moolelo.getPlaces();
 	}
+	
+	
 
     public Moolelo toMoolelo() {
         Moolelo moolelo = new Moolelo();

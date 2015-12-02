@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import lombok.Data;
 
 @Data
@@ -29,4 +32,13 @@ public class Place implements Serializable{
 	private Location location;
 	@ManyToOne
 	private Moolelo moolelo;
+	
+	@JsonIgnore
+	public Moolelo getMoolelo(){
+		return moolelo;
+	}
+	@JsonProperty
+	public void setMoolelo(Moolelo moolelo){
+		this.moolelo = moolelo;
+	}
 }
