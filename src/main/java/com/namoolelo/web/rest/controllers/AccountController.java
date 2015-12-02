@@ -12,6 +12,7 @@ import com.namoolelo.exceptions.AccountDoesNotExistException;
 import com.namoolelo.exceptions.AccountExistsException;
 import com.namoolelo.exceptions.web.ConflictException;
 import com.namoolelo.exceptions.web.NotFoundException;
+import com.namoolelo.security.SecurityUtils;
 import com.namoolelo.service.AccountService;
 import com.namoolelo.service.util.AccountList;
 import com.namoolelo.service.util.MooleloList;
@@ -70,6 +71,16 @@ public class AccountController {
         } catch(AccountExistsException exception) {
             throw new ConflictException(exception);
         }
+    }
+    
+    @RequestMapping(value="/myAccount", method=RequestMethod.GET)
+    public ResponseEntity<AccountResource> getMyAccount(){
+    	Long accountId = SecurityUtils.getAccountId();
+    	if(accountId != null){
+    		return getAccount(accountId);
+    	}
+    	return new ResponseEntity<AccountResource>(HttpStatus.UNAUTHORIZED);
+    	
     }
 
     @RequestMapping( value="/{accountId}",

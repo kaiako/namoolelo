@@ -21,6 +21,24 @@ angular.module('ngBoilerplate.account', ['ui.router', 'ngResource', 'base64'])
             data : { pageTitle : "Registration" }
             }
     )
+    .state('myAccount', {
+        url:'/accounts/myAccount',
+        views: {
+            'main': {
+                templateUrl:'account/account.tpl.html',
+                controller: 'AccountCtrl'
+            }
+        },
+        data : { pageTitle : "My Account" },
+        resolve : {
+			account : function(sessionService, accountService) {
+				if (sessionService.isLoggedIn()) {
+					return accountService.getMyAccount();
+				}
+				return null;
+			}
+		}
+    })
     .state('accountSearch', {
             url:'/accounts/search',
             views: {
@@ -67,6 +85,10 @@ angular.module('ngBoilerplate.account', ['ui.router', 'ngResource', 'base64'])
     service.register = function(account, success, failure) {
         var Account = $resource("/namoolelo/rest/accounts");
         Account.save({}, account, success, failure);
+    };
+    service.getMyAccount = function() {
+        var Account = $resource("/namoolelo/rest/accounts/myAccount");
+        return Account.get().$promise;
     };
     service.getAccountById = function(accountId) {
         var Account = $resource("/namoolelo/rest/accounts/:paramAccountId");
@@ -119,4 +141,12 @@ angular.module('ngBoilerplate.account', ['ui.router', 'ngResource', 'base64'])
 })
 .controller("AccountSearchCtrl", function($scope, accounts) {
     $scope.accounts = accounts;
+})
+.controller("AccountCtrl", function($scope, account) {
+	if(account != null){
+		$scope.account = account;
+	}else {
+        alert("You are not login in!");
+		$state.go("login");
+	}
 });

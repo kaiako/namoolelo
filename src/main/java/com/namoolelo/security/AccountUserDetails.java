@@ -8,12 +8,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import com.namoolelo.domain.Account;
 
+import lombok.Getter;
+
 public class AccountUserDetails implements UserDetails {
     /**
 	 * 
 	 */
 	private static final long serialVersionUID = 4049410306279567622L;
 	
+	@Getter
 	private final Account account;
 
     public AccountUserDetails(Account account) {

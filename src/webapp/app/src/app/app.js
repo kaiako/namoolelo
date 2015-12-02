@@ -4,6 +4,7 @@ angular.module( 'ngBoilerplate', [
   'ngBoilerplate.home',
   'ngBoilerplate.about',
   'ngBoilerplate.account',
+  'ngBoilerplate.moolelo',
   'ui.router',
   'hateoas'
 ])

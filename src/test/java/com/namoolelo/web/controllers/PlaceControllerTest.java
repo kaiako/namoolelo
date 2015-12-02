@@ -28,11 +28,12 @@ public class PlaceControllerTest {
 	public void setup(){
 		MockitoAnnotations.initMocks(this);
 		mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-		baseUrl = "/rest/moolelos/1/places";
+		baseUrl = "/rest/moolelos/1/places";		
 	}
 	
 	@Test
 	public void testCreate(){
+		
 		
 	}
 }

@@ -1,4 +1,4 @@
-angular.module('templates-app', ['about/about.tpl.html', 'account/login.tpl.html', 'account/register.tpl.html', 'account/search.tpl.html', 'home/home.tpl.html', 'moolelo/create.tpl.html', 'moolelo/search.tpl.html']);
+angular.module('templates-app', ['about/about.tpl.html', 'account/account.tpl.html', 'account/login.tpl.html', 'account/register.tpl.html', 'account/search.tpl.html', 'home/home.tpl.html', 'moolelo/create.tpl.html', 'moolelo/my-moolelo.tpl.html', 'moolelo/search.tpl.html']);
 
 angular.module("about/about.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("about/about.tpl.html",
@@ -270,6 +270,25 @@ angular.module("about/about.tpl.html", []).run(["$templateCache", function($temp
     "");
 }]);
 
+angular.module("account/account.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("account/account.tpl.html",
+    "<div class=\"row\">\n" +
+    "\n" +
+    "    <table class=\"table table-striped\">\n" +
+    "        <th>Account Name</th>\n" +
+    "        <th>Mo'olelos</th>\n" +
+    "        <tr>\n" +
+    "            <td>{{account.name}}</td>\n" +
+    "            <td>\n" +
+    "                <a ui-sref=\"manageMoolelos({accountId:account.rid})\" class=\"btn btn-large btn-default\">\n" +
+    "                    Manage\n" +
+    "                </a>\n" +
+    "            </td>\n" +
+    "        </tr>\n" +
+    "    </table>\n" +
+    "</div>");
+}]);
+
 angular.module("account/login.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/login.tpl.html",
     "<div class=\"row\">\n" +
@@ -508,6 +527,28 @@ angular.module("moolelo/create.tpl.html", []).run(["$templateCache", function($t
     "</div>\n" +
     "\n" +
     "");
+}]);
+
+angular.module("moolelo/my-moolelo.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("moolelo/my-moolelo.tpl.html",
+    "<div class=\"row\">\n" +
+    "    <div class=\"form-group\">\n" +
+    "        <input type=\"text\" class=\"form-control\" ng-model=\"q\" placeholder=\"account name\"/>\n" +
+    "    </div>\n" +
+    "\n" +
+    "    <table class=\"table table-striped\">\n" +
+    "        <th>Moolelo Title</th>\n" +
+    "        <th>Actions</th>\n" +
+    "        <tr ng-repeat=\"moolelo in moolelos | filter:q\">\n" +
+    "            <td>{{moolelo.title}}</td>\n" +
+    "            <td>\n" +
+    "                <a ui-sref=\"\" class=\"btn btn-large btn-default\">\n" +
+    "                    Manage\n" +
+    "                </a>\n" +
+    "            </td>\n" +
+    "        </tr>\n" +
+    "    </table>\n" +
+    "</div>");
 }]);
 
 angular.module("moolelo/search.tpl.html", []).run(["$templateCache", function($templateCache) {

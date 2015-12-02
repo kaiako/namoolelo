@@ -1,0 +1,18 @@
+<div class="row">
+    <div class="form-group">
+        <input type="text" class="form-control" ng-model="q" placeholder="account name"/>
+    </div>
+
+    <table class="table table-striped">
+        <th>Moolelo Title</th>
+        <th>Actions</th>
+        <tr ng-repeat="moolelo in moolelos | filter:q">
+            <td>{{moolelo.title}}</td>
+            <td>
+                <a ui-sref="" class="btn btn-large btn-default">
+                    Manage
+                </a>
+            </td>
+        </tr>
+    </table>
+</div>

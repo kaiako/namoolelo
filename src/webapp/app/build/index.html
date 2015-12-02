@@ -36,7 +36,7 @@
     <script type="text/javascript" src="src/app/account/account.js"></script>
     <script type="text/javascript" src="src/app/app.js"></script>
     <script type="text/javascript" src="src/app/home/home.js"></script>
-    <script type="text/javascript" src="src/app/moolelo/story.js"></script>
+    <script type="text/javascript" src="src/app/moolelo/moolelo.js"></script>
     <script type="text/javascript" src="src/common/plusOne/plusOne.js"></script>
     <script type="text/javascript" src="templates-common.js"></script>
     <script type="text/javascript" src="templates-app.js"></script>
@@ -74,6 +74,12 @@
                 Home
               </a>
             </li>
+            <li ng-show="isLoggedIn()">
+              <a href ui-sref="myAccount">
+                <i class="fa fa-book"></i>
+                My Account
+              </a>
+            </li>
             <li>
               <a href ui-sref="accountSearch">
                 <i class="fa fa-book"></i>
@@ -81,7 +87,7 @@
               </a>
             </li>
             <li ng-show="isLoggedIn()">
-              <a href="https://github.com/ngbp/ngbp">
+              <a href ui-sref="myMoolelos">
                 <i class="fa fa-book"></i>
                 My Mo'olelos
               </a>

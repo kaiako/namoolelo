@@ -28,6 +28,7 @@ public class Place implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
+	
 	@Embedded
 	private Location location;
 	@ManyToOne
