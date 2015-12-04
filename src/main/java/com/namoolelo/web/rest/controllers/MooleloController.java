@@ -1,8 +1,10 @@
 package com.namoolelo.web.rest.controllers;
 
+import java.net.URI;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,11 +15,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.namoolelo.domain.Moolelo;
+import com.namoolelo.domain.Place;
 import com.namoolelo.service.MooleloService;
 import com.namoolelo.service.util.MooleloList;
 import com.namoolelo.web.rest.model.Envelope;
 import com.namoolelo.web.rest.resources.MooleloListResource;
+import com.namoolelo.web.rest.resources.PlaceResource;
 import com.namoolelo.web.rest.resources.asm.MooleloListResourceAsm;
+import com.namoolelo.web.rest.resources.asm.PlaceResourceAsm;
 
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -60,5 +65,21 @@ public class MooleloController {
 		}
 		mooleloService.saveOrUpdate(moolelo);
 		return new Envelope(id);
+	}
+	
+	@RequestMapping(value="/{mooleloId}/places",method=RequestMethod.POST)
+	public ResponseEntity<PlaceResource> createPlace(@PathVariable long mooleloId, @RequestBody Place place){
+		log.info("Create a new Place for Moolelo Id : "+mooleloId);
+		Moolelo moolelo =  mooleloService.getMoolelo(mooleloId);
+//		if(moolelo.getOwner().getId() != SecurityUtils.getAccountId()){
+//			return new ResponseEntity<PlaceResource>(HttpStatus.FORBIDDEN);
+//		}
+		moolelo.getPlaces().add(place);
+		place.setMoolelo(moolelo);
+		mooleloService.saveOrUpdate(moolelo);
+		PlaceResource res = new PlaceResourceAsm().toResource(place);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create(res.getLink("self").getHref()));
+		return new ResponseEntity<PlaceResource>(res,headers,HttpStatus.CREATED);
 	}
 }

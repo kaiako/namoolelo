@@ -13,6 +13,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.namoolelo.domain.Location;
 import com.namoolelo.domain.Moolelo;
 import com.namoolelo.domain.Place;
+import com.namoolelo.domain.enums.Island;
+import com.namoolelo.domain.enums.Moku;
 import com.namoolelo.service.MooleloService;
 import com.namoolelo.service.util.MooleloList;
 import com.namoolelo.web.rest.controllers.MooleloController;
@@ -49,11 +51,11 @@ public class MooleloControllerTest {
 		baseUrl="/rest/moolelos";
 		Location location = new Location(1F, 1F);
 		Place place = new Place();
-		place.setName("Test Place");
+		place.setName("Test Place 1");
 		place.setLocation(location);
 		Location location2 = new Location(2F, 2F);
 		Place place2 = new Place();
-		place2.setName("Test Place");
+		place2.setName("Test Place 2");
 		place2.setLocation(location2);
 		List<Place> places = new ArrayList<Place>();
 		places.add(place);
@@ -72,16 +74,23 @@ public class MooleloControllerTest {
 		moolelos = new MooleloList(list);
 	}
 	
-//	@Test
-//	public void testCreate() throws Exception{
-//		String content = "{\"title\":\"Test Moolelo\",\"text\":\"Test TEXT\",\"summary\":\"This is a test Summary\",\"estDate\":\"1500s\",\"places\":[{\"id\":null,\"name\":\"Test Place\",\"location\":{\"latitude\":1.0,\"longitude\":1.0}},{\"id\":null,\"name\":\"Test Place\",\"location\":{\"latitude\":2.0,\"longitude\":2.0}}]}";
-//		when(mooleloService.createMoolelo(any())).thenReturn(moolelo);
-//		mockMvc.perform(post(baseUrl)
-//			.content(content)
-//			.contentType(MediaType.APPLICATION_JSON_VALUE))
-//		.andDo(print())
-//		.andExpect(status().isCreated());
-//	}
+	@Test
+	public void testCreatePlace() throws Exception{
+
+		Place place3 = new Place();
+		place3.setId(1L);
+		place3.setName("Test Place 2");
+		place3.setLocation(new Location(3F, 3F));
+		place3.setIsland(Island.OAHU);
+		place3.setMoku(Moku.OAHU_KOOLAULOA);
+		String content = mapper.writeValueAsString(place3);
+		when(mooleloService.getMoolelo(1L)).thenReturn(moolelo);
+		mockMvc.perform(post(baseUrl+"/1/places")
+			.content(content)
+			.contentType(MediaType.APPLICATION_JSON_VALUE))
+		.andDo(print())
+		.andExpect(status().isCreated());
+	}
 	
 	@Test
 	public void testFindAllMoolelos() throws Exception{

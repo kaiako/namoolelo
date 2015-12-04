@@ -273,7 +273,7 @@ angular.module("about/about.tpl.html", []).run(["$templateCache", function($temp
 angular.module("account/account.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/account.tpl.html",
     "<div class=\"row\">\n" +
-    "\n" +
+    "	<\n" +
     "    <table class=\"table table-striped\">\n" +
     "        <th>Account Name</th>\n" +
     "        <th>Mo'olelos</th>\n" +
@@ -357,7 +357,7 @@ angular.module("account/search.tpl.html", []).run(["$templateCache", function($t
 
 angular.module("home/home.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("home/home.tpl.html",
-    "<div class=\"jumbotron\">\n" +
+    "<div  class=\"jumbotron\">\n" +
     "  <h1>Non-Trivial AngularJS Made Easy</h1>\n" +
     "\n" +
     "  <p class=\"lead\">\n" +
@@ -415,8 +415,7 @@ angular.module("home/home.tpl.html", []).run(["$templateCache", function($templa
     "\n" +
     "\n" +
     "</div>\n" +
-    "\n" +
-    "<div class=\"marketing\">\n" +
+    "<div   class=\"marketing\">\n" +
     "  <div class=\"row\">\n" +
     "    <div class=\"col-xs-12 col-sm-6 col-md-4\">\n" +
     "      <h4><i class=\"fa fa-thumbs-up\"></i> Good to Go!</h4>\n" +

@@ -22,7 +22,7 @@ import lombok.Data;
 @Data
 @Entity
 @Table(name="place")
-public class Place implements Serializable{
+public class Place implements Identifiable<Long>, Serializable{
 
 	/**
 	 * 

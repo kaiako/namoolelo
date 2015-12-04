@@ -69,9 +69,13 @@ module.exports = {
       'vendor/angular-ui-utils/modules/route/route.js',
       'vendor/angular-resource/angular-resource.min.js',
       'vendor/angular-base64/angular-base64.min.js',
-      'vendor/angular-hateoas/src/angular-hateoas.js'
+      'vendor/angular-hateoas/src/angular-hateoas.js',
+      'vendor/angular-material/angular-material.min.js',
+      'vendor/angular-animate/angular-animate.min.js',
+      'vendor/angular-aria/angular-aria.min.js'
     ],
     css: [
+      'vendor/angular-material/angular-material.min.css'
     ],
     assets: [
     ]

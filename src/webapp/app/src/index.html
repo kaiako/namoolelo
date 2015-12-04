@@ -33,7 +33,8 @@
     </script>
   </head>
   <body>
-    <div class="container">
+  
+    <div layout="column">
       <div class="navbar navbar-default">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle" ng-init="menuCollapsed = true"
@@ -89,7 +90,7 @@
       </div>
     </div>
 
-    <div class="container" ui-view="main"></div>
+     <div layout="column" layout-margin ui-view="main"></div>
 
     <footer class="footer">
       <div class="container">

@@ -5,6 +5,7 @@ angular.module( 'ngBoilerplate', [
   'ngBoilerplate.about',
   'ngBoilerplate.account',
   'ngBoilerplate.moolelo',
+  'material.core',
   'ui.router',
   'hateoas'
 ])
@@ -12,6 +13,7 @@ angular.module( 'ngBoilerplate', [
 .config( function myAppConfig ( $stateProvider, $urlRouterProvider, HateoasInterceptorProvider) {
   $urlRouterProvider.otherwise( '/home' );
   HateoasInterceptorProvider.transformAllResponses();
+  
 })
 
 .run( function run () {

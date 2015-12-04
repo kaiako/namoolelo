@@ -6,6 +6,7 @@ import org.springframework.util.Assert;
 
 import com.namoolelo.dao.MooleloDao;
 import com.namoolelo.domain.Moolelo;
+import com.namoolelo.exceptions.web.NotFoundException;
 import com.namoolelo.service.util.MooleloList;
 
 @Service
@@ -16,7 +17,10 @@ public class MooleloServiceImpl implements MooleloService {
 
 	@Override
 	public Moolelo getMoolelo(long id) {
-		return mooleloDao.find(id);
+		Moolelo moolelo = mooleloDao.find(id);
+		if(moolelo == null)
+			throw new NotFoundException();
+		return moolelo;
 	}
 
 	@Override
