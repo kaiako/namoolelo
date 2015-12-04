@@ -92,7 +92,7 @@
               </a>
             </li>
             <li ng-show="isLoggedIn()">
-              <a href ui-sref="myMoolelos">
+              <a ui-sref="myMoolelos">
                 <i class="fa fa-book"></i>
                 My Mo'olelos
               </a>
@@ -108,10 +108,10 @@
       </div>
     </div>
 
-     <div layout="column" layout-margin ui-view="main"></div>
+     <div class="container" ui-view="main"></div>
 
     <footer class="footer">
-      <div class="container">
+      <div layout="column" layout-padding>
         <div class="footer-inner">
           <ul class="social">
             <li><a target="_blank" href="http://gplus.to/joshdmiller"><i class="fa fa-google-plus-sign"></i></a></li>

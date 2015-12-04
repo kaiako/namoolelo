@@ -16,6 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.namoolelo.domain.Moolelo;
 import com.namoolelo.domain.Place;
+import com.namoolelo.exceptions.AccountDoesNotExistException;
+import com.namoolelo.exceptions.web.NotFoundException;
+import com.namoolelo.security.SecurityUtils;
+import com.namoolelo.service.AccountService;
 import com.namoolelo.service.MooleloService;
 import com.namoolelo.service.util.MooleloList;
 import com.namoolelo.web.rest.model.Envelope;
@@ -35,6 +39,9 @@ public class MooleloController {
 	
 	@Autowired
 	private MooleloService mooleloService;
+
+	@Autowired
+	private AccountService accountService;
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<MooleloListResource> findAllMoolelos(@RequestParam(value="title", required = false) String title) {
@@ -81,5 +88,13 @@ public class MooleloController {
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(URI.create(res.getLink("self").getHref()));
 		return new ResponseEntity<PlaceResource>(res,headers,HttpStatus.CREATED);
+	}
+	
+	@RequestMapping(value="/myMoolelos", method=RequestMethod.GET)
+	public ResponseEntity<MooleloListResource> getMyMoolelos(){
+		log.info("Getting all my Moolelos");
+        MooleloList mooleloList = accountService.findMyMoolelos(true);
+        MooleloListResource mooleloListRes = new MooleloListResourceAsm().toResource(mooleloList);
+        return new ResponseEntity<MooleloListResource>(mooleloListRes, HttpStatus.OK);
 	}
 }

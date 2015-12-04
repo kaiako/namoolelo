@@ -10,6 +10,7 @@ import com.namoolelo.domain.Account;
 import com.namoolelo.domain.Moolelo;
 import com.namoolelo.exceptions.AccountDoesNotExistException;
 import com.namoolelo.exceptions.AccountExistsException;
+import com.namoolelo.exceptions.MooleloExistsException;
 import com.namoolelo.exceptions.web.ConflictException;
 import com.namoolelo.exceptions.web.NotFoundException;
 import com.namoolelo.security.SecurityUtils;
@@ -111,7 +112,7 @@ public class AccountController {
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(URI.create(res.getLink("self").getHref()));
             return new ResponseEntity<MooleloResource>(res, headers, HttpStatus.CREATED);
-        } catch(AccountExistsException exception) {
+        } catch(MooleloExistsException exception) {
             throw new ConflictException(exception);
         }
 	}

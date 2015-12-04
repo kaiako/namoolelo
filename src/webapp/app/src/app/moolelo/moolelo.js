@@ -1,30 +1,37 @@
 angular.module('ngBoilerplate.moolelo',[ 'ui.router', 'ngResource', 'base64','ngBoilerplate.account' ])
 		.config(function($stateProvider) {
 	$stateProvider.state('myMoolelos', {
-        url:'/myAccount/moolelos?accountId',
+        url:'/accounts/myMoolelos',
         views: {
             'main': {
-                templateUrl:',moolelo/my-moolelo.tpl.html',
+                templateUrl:'moolelo/my-moolelo.tpl.html',
                 controller: 'MyMoolelosCtrl'
             }
         },
         resolve: {
-            account: function(accountService, $stateParams) {
-                return accountService.getAccountById($stateParams.accountId);
-            },
             moolelos: function(mooleloService, $stateParams) {
-                return mooleloService.getMoolelosForAccount($stateParams.accountId);
+                return mooleloService.getMyMoolelos();
             }
         },
         data : { pageTitle : "My Mo'olelos" }
+	})
+	.state('createMoolelo',{
+		url:'/accounts/myMoolelos/create',
+		views: {
+			'main':{
+				templateUrl:'moolelo/create.tpl.html',
+				controller: 'CreateMooleloCtrl'			
+			}
+		},
+        data : { pageTitle : "Registration" }
 	});
 })
 .factory('mooleloService',	function($resource) {
 	var service = {};
-//	service.create = function(moolelo, success, failure) {
-//		var Moolelo = $resource("/namoolelo/rest/moolelos");
-//		Moolelo.save({}, moolelo, success, failure);
-//	};
+	service.create = function(accountId,moolelo, success, failure) {
+		var Moolelo = $resource("/namoolelo/rest/accounts/:paramAccountId/moolelos");
+		Moolelo.save({paramAccountId:accountId}, moolelo, success, failure);
+	};
 //	service.getMooleloById = function(mooleloId) {
 //		var Moolelo = $resource("/namoolelo/rest/moolelos/:paramMooleloId");
 //		return Moolelo.get({
@@ -37,6 +44,12 @@ angular.module('ngBoilerplate.moolelo',[ 'ui.router', 'ngResource', 'base64','ng
 //			return data.moolelos;
 //		});
 //	};
+    service.getMyMoolelos = function() {
+        var Moolelos = $resource("/namoolelo/rest/moolelos/myMoolelos");
+        return Moolelos.get().$promise.then(function(data){
+            return data.moolelos;
+        });
+    };
 
     service.getMoolelosForAccount = function(accountId) {
         var deferred = $q.defer();
@@ -62,15 +75,20 @@ angular.module('ngBoilerplate.moolelo',[ 'ui.router', 'ngResource', 'base64','ng
 .controller('MyMoolelosCtrl', function($scope, moolelos) {
 	$scope.moolelos = moolelos;
 })
-//.controller('MooleloCtrl',function($scope, sessionService, $state, accountService) {
-//
-//	$scope.mooleloCreate = function() {
-//		mooleloService.create($scope.moolelo, function(
-//				returnedData) {
-//			$state.go("mooleloSearch");
-//		}, function() {
-//			alert("Error registering user");
-//		});
-//	};
-//})
+.controller('CreateMooleloCtrl',function($scope, $state, mooleloService, sessionService) {
+
+	$scope.mooleloCreate = function() {
+		var accountId = sessionService.getAccountId();
+		var moolelo = $scope.moolelo;
+		mooleloService.create(accountId,moolelo,function(returnedData) {
+			$state.go("myMoolelos");
+		}, function(data) {
+			if(data.status == 409){
+				alert("Error cannot create this Mo'olelo : "+moolelo.title+" already exist!");
+			}else {
+				alert("System Error! Mo'olelo not created!");
+			}			
+		});
+	};
+})
 ;

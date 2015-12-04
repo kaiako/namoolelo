@@ -10,6 +10,7 @@ import com.namoolelo.domain.Moolelo;
 import com.namoolelo.exceptions.AccountDoesNotExistException;
 import com.namoolelo.exceptions.AccountExistsException;
 import com.namoolelo.exceptions.MooleloExistsException;
+import com.namoolelo.security.SecurityUtils;
 import com.namoolelo.service.util.AccountList;
 import com.namoolelo.service.util.MooleloList;
 
@@ -29,7 +30,11 @@ public class AccountServiceImpl implements AccountService{
 
 	@Override
 	public Account findAccount(Long accountId) {
-		return accountDao.find(accountId);
+		Account account = accountDao.find(accountId);
+		if(account == null){
+			throw new AccountDoesNotExistException();
+		}
+		return account;
 	}
 
 	@Override
@@ -63,8 +68,8 @@ public class AccountServiceImpl implements AccountService{
             throw new AccountDoesNotExistException();
         }
 
-        mooleloDao.saveOrUpdate(moolelo);
         moolelo.setOwner(account);
+        mooleloDao.saveOrUpdate(moolelo);
 
         return moolelo;
     }
@@ -77,6 +82,11 @@ public class AccountServiceImpl implements AccountService{
             throw new AccountDoesNotExistException();
         }
 		return mooleloDao.findAllMoolelosByAccount(accountId,includePlaces);
+	}
+
+	@Override
+	public MooleloList findMyMoolelos(boolean includePlaces) {
+		return findMoolelosByAccount(SecurityUtils.getAccountId(), includePlaces);
 	}
 
 	

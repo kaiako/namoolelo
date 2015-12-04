@@ -273,7 +273,6 @@ angular.module("about/about.tpl.html", []).run(["$templateCache", function($temp
 angular.module("account/account.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/account.tpl.html",
     "<div class=\"row\">\n" +
-    "	<\n" +
     "    <table class=\"table table-striped\">\n" +
     "        <th>Account Name</th>\n" +
     "        <th>Mo'olelos</th>\n" +
@@ -291,7 +290,7 @@ angular.module("account/account.tpl.html", []).run(["$templateCache", function($
 
 angular.module("account/login.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("account/login.tpl.html",
-    "<div class=\"row\">\n" +
+    "<div class=\"row col-lg-10\">\n" +
     "  <h1 class=\"page-header\">\n" +
     "      Login\n" +
     "  </h1>\n" +
@@ -504,7 +503,7 @@ angular.module("moolelo/create.tpl.html", []).run(["$templateCache", function($t
     "  <h1 class=\"page-header\">\n" +
     "      Create New Mo'olelo\n" +
     "  </h1>\n" +
-    "  <form ng-submit=\"create()\">\n" +
+    "  <form ng-submit=\"mooleloCreate()\">\n" +
     "      <div class=\"form-group\">\n" +
     "          <label>Title: </label>\n" +
     "          <input type=\"text\" ng-model=\"moolelo.title\" class=\"form-control\" />\n" +
@@ -531,10 +530,8 @@ angular.module("moolelo/create.tpl.html", []).run(["$templateCache", function($t
 angular.module("moolelo/my-moolelo.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("moolelo/my-moolelo.tpl.html",
     "<div class=\"row\">\n" +
-    "    <div class=\"form-group\">\n" +
-    "        <input type=\"text\" class=\"form-control\" ng-model=\"q\" placeholder=\"account name\"/>\n" +
-    "    </div>\n" +
-    "\n" +
+    "	\n" +
+    "	<a ui-sref=\"createMoolelo\" class=\"btn btn-xl btn-primary\">Create a Mo'olelo</a>\n" +
     "    <table class=\"table table-striped\">\n" +
     "        <th>Moolelo Title</th>\n" +
     "        <th>Actions</th>\n" +

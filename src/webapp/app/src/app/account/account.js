@@ -70,15 +70,18 @@ angular.module('ngBoilerplate.account', ['ui.router', 'ngResource', 'base64'])
     };
     session.logout = function() {
         localStorage.removeItem("session");
+        localStorage.removeItem("accountId");
     };
     session.isLoggedIn = function() {
         return localStorage.getItem("session") !== null;
     };
-    return session;
-})
-.factory('blogService', function($resource) {
-    var service = {};
-    return service;
+	session.setAccountId = function(accountId) {
+		localStorage.setItem("accountId",accountId);
+	};
+	session.getAccountId = function() {
+		return localStorage.getItem("accountId");
+	};
+	return session;
 })
 .factory('accountService', function($resource) {
     var service = {};
@@ -118,6 +121,9 @@ angular.module('ngBoilerplate.account', ['ui.router', 'ngResource', 'base64'])
     $scope.login = function() {
         accountService.userExists($scope.account, function(account) {
             sessionService.login($scope.account).then(function() {
+                accountService.getMyAccount().then(function(data){
+                    sessionService.setAccountId(data.rid);
+                });
                 $state.go("home");
             });
         },
@@ -131,6 +137,9 @@ angular.module('ngBoilerplate.account', ['ui.router', 'ngResource', 'base64'])
         accountService.register($scope.account,
         function(returnedData) {
             sessionService.login($scope.account).then(function() {
+                accountService.getMyAccount().then(function(data){
+                    sessionService.setAccountId(data.rid);
+                });
                 $state.go("home");
             });
         },
