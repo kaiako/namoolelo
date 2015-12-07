@@ -12,6 +12,13 @@ import lombok.Setter;
 @Getter
 public class MooleloListResource extends ResourceSupport{
 	
-	private List<MooleloResource> moolelos = new ArrayList<MooleloResource>();
+	private List<MooleloWithOutPlacesResource> moolelos = new ArrayList<MooleloWithOutPlacesResource>();
 
+	public void setMoolelos(List<MooleloResource> list){
+		list.parallelStream().forEach(res -> {
+			MooleloWithOutPlacesResource mooleloRes = new MooleloWithOutPlacesResource();
+			mooleloRes.setMoolelo(res.toMoolelo());
+			moolelos.add(mooleloRes);			
+		});
+	}
 }

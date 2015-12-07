@@ -4,7 +4,7 @@ angular.module('ngBoilerplate.moolelo',[ 'ui.router', 'ngResource', 'base64','ng
         url:'/accounts/myMoolelos',
         views: {
             'main': {
-                templateUrl:'moolelo/my-moolelo.tpl.html',
+                templateUrl:'moolelo/moolelo-list.tpl.html',
                 controller: 'MyMoolelosCtrl'
             }
         },
@@ -24,6 +24,21 @@ angular.module('ngBoilerplate.moolelo',[ 'ui.router', 'ngResource', 'base64','ng
 			}
 		},
         data : { pageTitle : "Registration" }
+	})
+	.state('allMoolelos',{
+		url:'/moolelos/search',
+		views: {
+			'main':{
+				templateUrl:'moolelo/moolelo-list.tpl.html',
+				controller: 'MooleloSearchCtrl'			
+			}
+		},
+        resolve: {
+            moolelos: function(mooleloService, $stateParams) {
+                return mooleloService.getAllMoolelos();
+            }
+        },
+        data : { pageTitle : "Mo'olelo Search" }
 	});
 })
 .factory('mooleloService',	function($resource) {
@@ -38,12 +53,12 @@ angular.module('ngBoilerplate.moolelo',[ 'ui.router', 'ngResource', 'base64','ng
 //			paramMooleloId : mooleloId
 //		}).$promise;
 //	};
-//	service.getAllMoolelos = function() {
-//		var Moolelo = $resource("/namoolelo/rest/moolelos");
-//		return Moolelo.get().$promise.then(function(data) {
-//			return data.moolelos;
-//		});
-//	};
+	service.getAllMoolelos = function() {
+		var Moolelo = $resource("/namoolelo/rest/moolelos");
+		return Moolelo.get().$promise.then(function(data) {
+			return data.moolelos;
+		});
+	};
     service.getMyMoolelos = function() {
         var Moolelos = $resource("/namoolelo/rest/moolelos/myMoolelos");
         return Moolelos.get().$promise.then(function(data){
@@ -69,9 +84,9 @@ angular.module('ngBoilerplate.moolelo',[ 'ui.router', 'ngResource', 'base64','ng
     };
     return service;
 })
-//.controller('MooleloSearchCtrl', function($scope, moolelos) {
-//	$scope.moolelos = moolelos;
-//})
+.controller('MooleloSearchCtrl', function($scope, moolelos) {
+	$scope.moolelos = moolelos;
+})
 .controller('MyMoolelosCtrl', function($scope, moolelos) {
 	$scope.moolelos = moolelos;
 })

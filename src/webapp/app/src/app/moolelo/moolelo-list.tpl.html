@@ -1,7 +1,13 @@
 <div class="row">
 	
-	<a ui-sref="createMoolelo" class="btn btn-xl btn-primary">Create a Mo'olelo</a>
+	<a ng-show="isLoggedIn()" ui-sref="createMoolelo" class="btn btn-xl btn-primary" >Create a Mo'olelo</a>
+	
+    <div layout="column" ui-view="create-moolelo"></div>
+    
     <table class="table table-striped">
+    <div class="form-group">
+        <input type="text" class="form-control" ng-model="q" placeholder="Mo'olelo Title"/>
+    </div>
         <th>Moolelo Title</th>
         <th>Actions</th>
         <tr ng-repeat="moolelo in moolelos | filter:q">
