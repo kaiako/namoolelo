@@ -173,6 +173,8 @@ dependencies {
 	testCompile 'junit:junit:4.+'
 	testCompile "org.springframework:spring-test:$springVersion"
 	testCompile 'org.mockito:mockito-core:1.+'
+	testCompile 'org.powermock:powermock-api-mockito:1.+'
+	testCompile 'org.powermock:powermock-module-junit4:1.6.3'
 	testCompile 'org.hamcrest:hamcrest-core:1.+'
 	testCompile 'org.hamcrest:hamcrest-library:1.+'	
 	testCompile 'com.jayway.jsonpath:json-path:2.+'

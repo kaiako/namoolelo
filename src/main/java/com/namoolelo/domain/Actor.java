@@ -1,6 +1,7 @@
 package com.namoolelo.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -18,8 +19,8 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name="characters")
-public class Character implements Identifiable<Long>, Serializable {
+@Table(name="actors")
+public class Actor implements Identifiable<Long>, Serializable {
 
 	/**
 	 * 
@@ -33,8 +34,15 @@ public class Character implements Identifiable<Long>, Serializable {
 	private String name;
 	private String description;
 	@ManyToMany(cascade=CascadeType.ALL)  
-    @JoinTable(name="moolelo_character", 
+    @JoinTable(name="moolelo_actor", 
 	    joinColumns=@JoinColumn(name="moolelo_id"), 
-	    inverseJoinColumns=@JoinColumn(name="character_id")) 
+	    inverseJoinColumns=@JoinColumn(name="actor_id")) 
 	private Set<Moolelo> moolelos;
+	
+	public Set<Moolelo> getMoolelos(){
+		if(moolelos == null){
+			moolelos = new HashSet<Moolelo>();
+		}
+		return moolelos;
+	}
 }

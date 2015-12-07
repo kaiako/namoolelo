@@ -12,7 +12,7 @@ public class AccountDaoImpl extends GenericDaoImpl<Account, Long> implements Acc
 
 	@Override
 	public Account findByAccountUsername(String username) {
-		return (Account) getSessionFactory().getCurrentSession().createCriteria(Account.class)
+		return (Account) getCriteria()
 				.add(Restrictions.eq("username",username))
 				.uniqueResult();
 	}
