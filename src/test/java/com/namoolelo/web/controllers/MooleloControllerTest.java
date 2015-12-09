@@ -17,6 +17,7 @@ import com.namoolelo.domain.Place;
 import com.namoolelo.domain.enums.Island;
 import com.namoolelo.domain.enums.Moku;
 import com.namoolelo.service.MooleloService;
+import com.namoolelo.service.PlaceService;
 import com.namoolelo.service.util.MooleloList;
 import com.namoolelo.web.rest.controllers.MooleloController;
 
@@ -29,12 +30,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.mockito.Mockito.*;
 import static org.hamcrest.core.Is.*;
 
-//@RunWith(PowerMockRunner.class)
-//@PrepareForTest(SecurityUtils.class)
 public class MooleloControllerTest {
 	
 	@Mock
 	private MooleloService mooleloService;
+	@Mock
+	private PlaceService placeService;
 	
 	@InjectMocks
 	private MooleloController controller;
@@ -53,7 +54,8 @@ public class MooleloControllerTest {
 		MockitoAnnotations.initMocks(this);
 		mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 		baseUrl="/rest/moolelos";
-		account = mock(Account.class);
+		account = new Account();
+		account.setId(1L);
 		Location location = new Location(1F, 1F);
 		Place place = new Place();
 		place.setName("Test Place 1");
@@ -78,8 +80,6 @@ public class MooleloControllerTest {
 		list = new ArrayList<Moolelo>();
 		list.add(moolelo);
 		moolelos = new MooleloList(list);
-//		PowerMockito.mockStatic(SecurityUtils.class);
-//		PowerMockito.when(SecurityUtils.getAccountId()).thenReturn(1L);
 	}
 	
 	@Test
@@ -87,13 +87,12 @@ public class MooleloControllerTest {
 
 		Place place3 = new Place();
 		place3.setId(1L);
-		place3.setName("Test Place 2");
+		place3.setName("Test Place 3");
 		place3.setLocation(new Location(3F, 3F));
 		place3.setIsland(Island.OAHU);
 		place3.setMoku(Moku.OAHU_KOOLAULOA);
 		String content = mapper.writeValueAsString(place3);
-		when(account.getId()).thenReturn(1L);
-		when(mooleloService.getMoolelo(1L)).thenReturn(moolelo);
+		when(placeService.createPlace(anyLong(),any(Place.class))).thenReturn(place3);
 		mockMvc.perform(post(baseUrl+"/1/places")
 			.content(content)
 			.contentType(MediaType.APPLICATION_JSON_VALUE))

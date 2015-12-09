@@ -19,7 +19,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name="actors")
+@Table(name="actor")
 public class Actor implements Identifiable<Long>, Serializable {
 
 	/**

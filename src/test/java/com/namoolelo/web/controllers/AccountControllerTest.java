@@ -9,8 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.namoolelo.domain.Location;
 import com.namoolelo.domain.Moolelo;
@@ -24,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.mockito.Mockito.*;
 
-public class AccountControllerTest {
+public class AccountControllerTest extends BaseControllerTest{
 
 	@Mock
 	AccountService accountService;
@@ -32,17 +30,14 @@ public class AccountControllerTest {
 	@InjectMocks
 	AccountController controller;
 	
-	MockMvc mockMvc;
 	private Moolelo moolelo;
 	private MooleloList moolelos;
 	private ArrayList<Moolelo> list;
-	private String baseUrl;
 	
 	@Before
 	public void setup(){
 		MockitoAnnotations.initMocks(this);
-		mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
-		baseUrl="/rest/accounts/1/moolelos";
+		super.init("/rest/accounts/1/moolelos",controller);
 		Location location = new Location(1F, 1F);
 		Place place = new Place();
 		place.setName("Test Place");

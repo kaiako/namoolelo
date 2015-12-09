@@ -24,7 +24,7 @@ public class ActorResourceAsm extends ResourceAssemblerSupport<Actor, ActorResou
         for(Moolelo moolelo : actor.getMoolelos()){
         	res.add(linkTo(methodOn(MooleloController.class).getMoolelo(moolelo.getId())).withRel("related"));		
         }
-		return null;
+		return res;
 	}
 
 }

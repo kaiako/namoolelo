@@ -34,6 +34,7 @@ public class MooleloResource extends ResourceSupport{
 
     public Moolelo toMoolelo() {
         Moolelo moolelo = new Moolelo();
+        moolelo.setId(rid);
         moolelo.setTitle(title);
         moolelo.setText(text);
         moolelo.setSummary(summary);
