@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,6 +70,11 @@ public abstract class GenericDaoImpl<T extends Serializable & Identifiable<I>, I
 	@Transactional
 	@Override
 	public List<T> getAll(){
-		return (List<T>) getSessionFactory().getCurrentSession().createCriteria(getType()).list();
+		return (List<T>) getCriteria().list();
 	}
+	
+	protected Criteria getCriteria() {
+		return getSessionFactory().getCurrentSession().createCriteria(getType());
+	}
+	
 }

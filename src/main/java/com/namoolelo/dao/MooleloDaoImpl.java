@@ -22,7 +22,7 @@ public class MooleloDaoImpl extends GenericDaoImpl<Moolelo, Long> implements Moo
 	SessionFactory sessionFactory;
 	
 	private Criteria getMooleloCriteria(boolean includePlaces){
-		Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(Moolelo.class);
+		Criteria criteria = getCriteria();
 		if(includePlaces){
 			criteria.setFetchMode("places", FetchMode.JOIN);
 		}

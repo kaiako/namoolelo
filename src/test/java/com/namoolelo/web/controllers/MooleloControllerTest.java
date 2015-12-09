@@ -2,19 +2,25 @@ package com.namoolelo.web.controllers;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.namoolelo.domain.Account;
 import com.namoolelo.domain.Location;
 import com.namoolelo.domain.Moolelo;
 import com.namoolelo.domain.Place;
 import com.namoolelo.domain.enums.Island;
 import com.namoolelo.domain.enums.Moku;
+import com.namoolelo.security.SecurityUtils;
 import com.namoolelo.service.MooleloService;
 import com.namoolelo.service.util.MooleloList;
 import com.namoolelo.web.rest.controllers.MooleloController;
@@ -28,6 +34,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.mockito.Mockito.*;
 import static org.hamcrest.core.Is.*;
 
+//@RunWith(PowerMockRunner.class)
+//@PrepareForTest(SecurityUtils.class)
 public class MooleloControllerTest {
 	
 	@Mock
@@ -43,12 +51,14 @@ public class MooleloControllerTest {
 	private ArrayList<Moolelo> list;
 	private String baseUrl;
 	private ObjectMapper mapper = new ObjectMapper();
+	private Account account ;
 	
 	@Before
 	public void setup(){
 		MockitoAnnotations.initMocks(this);
 		mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 		baseUrl="/rest/moolelos";
+		account = mock(Account.class);
 		Location location = new Location(1F, 1F);
 		Place place = new Place();
 		place.setName("Test Place 1");
@@ -67,11 +77,14 @@ public class MooleloControllerTest {
 		moolelo.setText("Test TEXT");
 		moolelo.setEstDate("1500s");		
 		moolelo.setPlaces(places);
+		moolelo.setOwner(account);
 		place.setMoolelo(moolelo);	
 		place2.setMoolelo(moolelo);		
 		list = new ArrayList<Moolelo>();
 		list.add(moolelo);
 		moolelos = new MooleloList(list);
+//		PowerMockito.mockStatic(SecurityUtils.class);
+//		PowerMockito.when(SecurityUtils.getAccountId()).thenReturn(1L);
 	}
 	
 	@Test
@@ -84,6 +97,7 @@ public class MooleloControllerTest {
 		place3.setIsland(Island.OAHU);
 		place3.setMoku(Moku.OAHU_KOOLAULOA);
 		String content = mapper.writeValueAsString(place3);
+		when(account.getId()).thenReturn(1L);
 		when(mooleloService.getMoolelo(1L)).thenReturn(moolelo);
 		mockMvc.perform(post(baseUrl+"/1/places")
 			.content(content)

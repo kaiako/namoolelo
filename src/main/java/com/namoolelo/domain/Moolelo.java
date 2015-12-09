@@ -43,6 +43,6 @@ public class Moolelo implements Identifiable<Long>, Serializable{
 	@Cascade(CascadeType.ALL)
 	private List<Place> places;
 	@ManyToMany(mappedBy="moolelos")
-	private Set<Character> characters;
+	private Set<Actor> characters;
 	
 }

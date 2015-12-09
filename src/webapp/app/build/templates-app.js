@@ -1,4 +1,4 @@
-angular.module('templates-app', ['about/about.tpl.html', 'account/account.tpl.html', 'account/login.tpl.html', 'account/register.tpl.html', 'account/search.tpl.html', 'home/home.tpl.html', 'moolelo/create.tpl.html', 'moolelo/my-moolelo.tpl.html', 'moolelo/search.tpl.html']);
+angular.module('templates-app', ['about/about.tpl.html', 'account/account.tpl.html', 'account/login.tpl.html', 'account/register.tpl.html', 'account/search.tpl.html', 'home/home.tpl.html', 'moolelo/create.tpl.html', 'moolelo/moolelo-list.tpl.html', 'moolelo/search.tpl.html']);
 
 angular.module("about/about.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("about/about.tpl.html",
@@ -527,12 +527,18 @@ angular.module("moolelo/create.tpl.html", []).run(["$templateCache", function($t
     "");
 }]);
 
-angular.module("moolelo/my-moolelo.tpl.html", []).run(["$templateCache", function($templateCache) {
-  $templateCache.put("moolelo/my-moolelo.tpl.html",
+angular.module("moolelo/moolelo-list.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("moolelo/moolelo-list.tpl.html",
     "<div class=\"row\">\n" +
     "	\n" +
-    "	<a ui-sref=\"createMoolelo\" class=\"btn btn-xl btn-primary\">Create a Mo'olelo</a>\n" +
+    "	<a ng-show=\"isLoggedIn()\" ui-sref=\"createMoolelo\" class=\"btn btn-xl btn-primary\" >Create a Mo'olelo</a>\n" +
+    "	\n" +
+    "    <div layout=\"column\" ui-view=\"create-moolelo\"></div>\n" +
+    "    \n" +
     "    <table class=\"table table-striped\">\n" +
+    "    <div class=\"form-group\">\n" +
+    "        <input type=\"text\" class=\"form-control\" ng-model=\"q\" placeholder=\"Mo'olelo Title\"/>\n" +
+    "    </div>\n" +
     "        <th>Moolelo Title</th>\n" +
     "        <th>Actions</th>\n" +
     "        <tr ng-repeat=\"moolelo in moolelos | filter:q\">\n" +
