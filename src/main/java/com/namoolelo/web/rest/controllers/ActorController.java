@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestController
 @RequestMapping("/rest/actors")
-public class CharacterController {
+public class ActorController {
 
 	@Autowired
 	private ActorService actorService;

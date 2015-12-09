@@ -12,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.namoolelo.domain.Location;
 import com.namoolelo.domain.Moolelo;
 import com.namoolelo.domain.Place;
@@ -38,7 +37,6 @@ public class AccountControllerTest {
 	private MooleloList moolelos;
 	private ArrayList<Moolelo> list;
 	private String baseUrl;
-	private ObjectMapper mapper = new ObjectMapper();
 	
 	@Before
 	public void setup(){

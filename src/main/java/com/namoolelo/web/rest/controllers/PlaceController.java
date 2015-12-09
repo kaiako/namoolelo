@@ -35,7 +35,7 @@ public class PlaceController {
 	}	
 	
 	@RequestMapping(value="/{id}",method=RequestMethod.GET)
-	public ResponseEntity<PlaceResource> getPlace(@PathVariable("id") Long placeId) {
+	public ResponseEntity<PlaceResource> findPlace(@PathVariable("id") Long placeId) {
 		log.info("Getting place for id : "+placeId);
         Place place = placeService.findPlace(placeId);
         if(place != null)

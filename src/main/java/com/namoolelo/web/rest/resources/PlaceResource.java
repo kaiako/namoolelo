@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import org.springframework.hateoas.ResourceSupport;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.namoolelo.domain.Location;
 import com.namoolelo.domain.Moolelo;
 import com.namoolelo.domain.Place;
@@ -22,6 +24,16 @@ public class PlaceResource extends ResourceSupport{
 	private Moku moku;
 	private Location location;
 	private Moolelo moolelo;
+	
+	@JsonIgnore
+	public Moolelo getMoolelo(){
+		return moolelo;
+	}
+	
+	@JsonProperty
+	public void setMoolelo(Moolelo moolelo){
+		this.moolelo = moolelo;
+	}
 
 	public void setPlaceResource(Place place){
 		this.rid = place.getId();

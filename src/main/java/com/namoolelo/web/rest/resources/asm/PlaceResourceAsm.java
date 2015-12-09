@@ -21,7 +21,7 @@ public class PlaceResourceAsm extends ResourceAssemblerSupport<Place, PlaceResou
 	public PlaceResource toResource(Place place) {
 		PlaceResource res = new PlaceResource();
 		res.setPlaceResource(place);
-        res.add(linkTo(methodOn(PlaceController.class).getPlace(place.getId())).withSelfRel());
+        res.add(linkTo(methodOn(PlaceController.class).findPlace(place.getId())).withSelfRel());
         Moolelo moolelo = place.getMoolelo();
         if(moolelo != null)
         	res.add(linkTo(methodOn(MooleloController.class).getMoolelo(moolelo.getId())).withRel("parent"));
