@@ -1,4 +1,4 @@
-angular.module('templates-app', ['about/about.tpl.html', 'account/account.tpl.html', 'account/login.tpl.html', 'account/register.tpl.html', 'account/search.tpl.html', 'home/home.tpl.html', 'moolelo/create.tpl.html', 'moolelo/moolelo-list.tpl.html', 'moolelo/search.tpl.html']);
+angular.module('templates-app', ['about/about.tpl.html', 'account/account.tpl.html', 'account/login.tpl.html', 'account/register.tpl.html', 'account/search.tpl.html', 'home/home.tpl.html', 'moolelo/create.tpl.html', 'moolelo/moolelo-list.tpl.html', 'moolelo/search.tpl.html', 'place/create-place.tpl.html']);
 
 angular.module("about/about.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("about/about.tpl.html",
@@ -520,7 +520,14 @@ angular.module("moolelo/create.tpl.html", []).run(["$templateCache", function($t
     "          <label>Text:</label>\n" +
     "          <input type=\"text\" ng-model=\"moolelo.text\" class=\"form-control\" />\n" +
     "      </div>\n" +
-    "      <button class=\"btn btn-success\" type=\"submit\">Create</button>\n" +
+    "      <label>List of Places</label>\n" +
+    "      <div ng-repeat=\"place in moolelo.places\">\n" +
+    "          <div>Place : {{place.name}}</div>\n" +
+    "      </div>\n" +
+    "      <a ui-sref=\".createPlace\" class=\"btn btn-primary\" >Add Place</a>\n" +
+    "      <div ui-view></div>\n" +
+    "      <button class=\"btn btn-success\" type=\"submit\">Create</button>      \n" +
+    "      <a ui-sref=\"addCharacter\" class=\"btn btn-primary\" >Add Character</a>\n" +
     "  </form>\n" +
     "</div>\n" +
     "\n" +
@@ -573,4 +580,38 @@ angular.module("moolelo/search.tpl.html", []).run(["$templateCache", function($t
     "        </tr>\n" +
     "    </table>\n" +
     "</div>");
+}]);
+
+angular.module("place/create-place.tpl.html", []).run(["$templateCache", function($templateCache) {
+  $templateCache.put("place/create-place.tpl.html",
+    "<div class=\"row\">\n" +
+    "  <h1 class=\"page-header\">\n" +
+    "      Create New Place\n" +
+    "  </h1>\n" +
+    "  <form ng-submit=\"createPlace()\">\n" +
+    "      <div class=\"form-group\">\n" +
+    "          <label>Name: </label>\n" +
+    "          <input type=\"text\" ng-model=\"place.name\" class=\"form-control\" />\n" +
+    "      </div>\n" +
+    "      <div class=\"form-group\">\n" +
+    "          <label>Island:</label>\n" +
+    "          <input type=\"text\" ng-model=\"place.island\" class=\"form-control\" />\n" +
+    "      </div>\n" +
+    "      <div class=\"form-group\">\n" +
+    "          <label>Moku:</label>\n" +
+    "          <input type=\"text\" ng-model=\"place.moku\" class=\"form-control\" />\n" +
+    "      </div>\n" +
+    "      <div class=\"form-group\">\n" +
+    "          <label>Latitude:</label>\n" +
+    "          <input type=\"text\" ng-model=\"place.location.latitude\" class=\"form-control\" />\n" +
+    "      </div>\n" +
+    "      <div class=\"form-group\">\n" +
+    "          <label>Longitude:</label>\n" +
+    "          <input type=\"text\" ng-model=\"place.location.longitude\" class=\"form-control\" />\n" +
+    "      </div>\n" +
+    "      <button class=\"btn btn-success\" type=\"submit\">Add</button>      \n" +
+    "  </form>\n" +
+    "</div>\n" +
+    "\n" +
+    "");
 }]);
