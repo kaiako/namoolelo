@@ -2,7 +2,7 @@
   <h1 class="page-header">
       Create New Place
   </h1>
-  <form ng-submit="createPlace()">
+  <form ng-submit="placeCreate()">
       <div class="form-group">
           <label>Name: </label>
           <input type="text" ng-model="place.name" class="form-control" />
@@ -23,7 +23,8 @@
           <label>Longitude:</label>
           <input type="text" ng-model="place.location.longitude" class="form-control" />
       </div>
-      <button class="btn btn-success" type="submit">Add</button>      
+      <a ui-sref="createMoolelo" class="btn btn-default" >Back</a>
+      <button class="btn btn-success" type="submit">Add</button>    
   </form>
 </div>
 

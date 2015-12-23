@@ -23,10 +23,10 @@
       <div ng-repeat="place in moolelo.places">
           <div>Place : {{place.name}}</div>
       </div>
-      <a ui-sref=".createPlace" class="btn btn-primary" >Add Place</a>
-      <div ui-view></div>
-      <button class="btn btn-success" type="submit">Create</button>      
+      <a ui-sref="createPlace({mooleloId:{{currentMooleloId}}})" class="btn btn-primary" >Add Place</a>
       <a ui-sref="addCharacter" class="btn btn-primary" >Add Character</a>
+      <button class="btn btn-success" type="submit">Create</button>      
   </form>
+  <div ui-view></div>  
 </div>
 

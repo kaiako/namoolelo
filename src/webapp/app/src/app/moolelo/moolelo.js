@@ -1,4 +1,4 @@
-angular.module('ngBoilerplate.moolelo',[ 'ui.router', 'ngResource', 'base64','ngBoilerplate.account', 'ngBoilerplate.place' ])
+angular.module('ngBoilerplate.moolelo',[ 'ui.router', 'ngResource', 'base64'])
 		.config(function($stateProvider) {
 	$stateProvider.state('myMoolelos', {
         url:'/accounts/myMoolelos',
@@ -25,11 +25,11 @@ angular.module('ngBoilerplate.moolelo',[ 'ui.router', 'ngResource', 'base64','ng
 		},
         data : { pageTitle : "Registration" }
 	})
-	.state('createMoolelo.createPlace', {
-		url:'/createPlace?mooleloId',
-		templateUrl:'place/create-place.tpl.html',
-		controller: 'CreatePlaceCtrl'
-	})
+//	.state('createMoolelo.createPlace', {
+//		url:'/createPlace',
+//		templateUrl:'place/create-place.tpl.html',
+//		controller: 'CreatePlaceCtrl'
+//	})
 	.state('allMoolelos',{
 		url:'/moolelos/search',
 		views: {
@@ -51,19 +51,22 @@ angular.module('ngBoilerplate.moolelo',[ 'ui.router', 'ngResource', 'base64','ng
 	//Client Side Calls
 	
 	service.mooleloMap = {};
-	service.createIdForNewMoolelo = function(moolelo){
+	service.createNewMoolelo = function(){
+		var moolelo = {};
 		var id =  Math.floor((Math.random() * 10000) + 1);
 		while(id in service.mooleloMap){
 			id =  Math.floor((Math.random() * 10000) + 1);
 		}
+		moolelo.id = id;
 		service.mooleloMap[id] = moolelo;
-		return id;
+		return moolelo;
 	};
 	service.addPlace = function(mooleloId, place){
-		if(	service.mooleloMap[mooleloId].places == null){
-			service.mooleloMap[mooleloId].places = [];
+		var places = service.mooleloMap[mooleloId];
+		if(!places){
+			places = [];
+			service.mooleloMap[mooleloId] = places;
 		}
-		var places = service.mooleloMap[mooleloId].places;
 		places.push(place);
 		
 	};
@@ -121,13 +124,10 @@ angular.module('ngBoilerplate.moolelo',[ 'ui.router', 'ngResource', 'base64','ng
 	$scope.moolelos = moolelos;
 })
 .controller('CreateMooleloCtrl',function($scope, $state, mooleloService, sessionService) {
-	if($scope.moolelo == null){
-		$scope.moolelo = {};
-	}
-	$scope.currentMooleloId = mooleloService.createIdForNewMoolelo($scope.moolelo);
+	$scope.newMoolelo = mooleloService.createNewMoolelo();	
 	$scope.mooleloCreate = function() {
 		var accountId = sessionService.getAccountId();
-		var moolelo = $scope.moolelo;
+		var moolelo = $scope.newMoolelo;
 		mooleloService.create(accountId,moolelo,function(returnedData) {
 			$state.go("myMoolelos");
 		}, function(data) {
@@ -138,16 +138,5 @@ angular.module('ngBoilerplate.moolelo',[ 'ui.router', 'ngResource', 'base64','ng
 			}			
 		});
 	};
-})
-.controller('CreatePlaceCtrl', function($scope, $stateParams, mooleloService, placeService) {
-	var mooleloId = $stateParams.mooleloId;
-	if(mooleloId == null){
-		$state.go("myMoolelos");
-	}
-	if($scope.place == null){
-		$scope.place = {};
-	}
-	$scope.createPlace = mooleloService.addPlace(mooleloId,$scope.place);
-	$state.go("createMoolelo");
 })
 ;

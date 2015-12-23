@@ -524,11 +524,11 @@ angular.module("moolelo/create.tpl.html", []).run(["$templateCache", function($t
     "      <div ng-repeat=\"place in moolelo.places\">\n" +
     "          <div>Place : {{place.name}}</div>\n" +
     "      </div>\n" +
-    "      <a ui-sref=\".createPlace\" class=\"btn btn-primary\" >Add Place</a>\n" +
-    "      <div ui-view></div>\n" +
-    "      <button class=\"btn btn-success\" type=\"submit\">Create</button>      \n" +
+    "      <a ui-sref=\"createPlace({mooleloId:{{currentMooleloId}}})\" class=\"btn btn-primary\" >Add Place</a>\n" +
     "      <a ui-sref=\"addCharacter\" class=\"btn btn-primary\" >Add Character</a>\n" +
+    "      <button class=\"btn btn-success\" type=\"submit\">Create</button>      \n" +
     "  </form>\n" +
+    "  <div ui-view></div>  \n" +
     "</div>\n" +
     "\n" +
     "");
@@ -588,7 +588,7 @@ angular.module("place/create-place.tpl.html", []).run(["$templateCache", functio
     "  <h1 class=\"page-header\">\n" +
     "      Create New Place\n" +
     "  </h1>\n" +
-    "  <form ng-submit=\"createPlace()\">\n" +
+    "  <form ng-submit=\"placeCreate()\">\n" +
     "      <div class=\"form-group\">\n" +
     "          <label>Name: </label>\n" +
     "          <input type=\"text\" ng-model=\"place.name\" class=\"form-control\" />\n" +
@@ -609,7 +609,8 @@ angular.module("place/create-place.tpl.html", []).run(["$templateCache", functio
     "          <label>Longitude:</label>\n" +
     "          <input type=\"text\" ng-model=\"place.location.longitude\" class=\"form-control\" />\n" +
     "      </div>\n" +
-    "      <button class=\"btn btn-success\" type=\"submit\">Add</button>      \n" +
+    "      <a ui-sref=\"createMoolelo\" class=\"btn btn-default\" >Back</a>\n" +
+    "      <button class=\"btn btn-success\" type=\"submit\">Add</button>    \n" +
     "  </form>\n" +
     "</div>\n" +
     "\n" +

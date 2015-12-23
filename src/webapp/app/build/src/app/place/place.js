@@ -1,22 +1,30 @@
-angular.module('ngBoilerplate.place',[ 'ui.router', 'ngResource', 'base64','ngBoilerplate.moolelo' ])
+angular.module('ngBoilerplate.place',[ 'ui.router','ngBoilerplate.moolelo'])
 		.config(function($stateProvider) {
 	$stateProvider.state('createPlace', {
-        url:'/places/create',
+        url:'/places/create?mooleloId',
         views: {
             'main': {
-                templateUrl:'place/create-place.tpl.html'
+                templateUrl:'place/create-place.tpl.html',
+                controller: 'CreatePlaceCtrl'
             }
         },
-        resolve: {
-            moolelo: function(mooleloService, $stateParams) {
-                return mooleloService.getMyMoolelos();
-            }
-        },
-        data : { pageTitle : "My Mo'olelos" }
+        data : { pageTitle : "Create Place" }
 	});
 })
 .factory('placeService', function($resource) {
 	var service = {};
     return service;
+})
+.controller('CreatePlaceCtrl', function($scope, $state, $stateParams, mooleloService, placeService) {
+	var mooleloId = $stateParams.mooleloId;
+	if(mooleloId == null){
+		$state.go("myMoolelos");
+	}
+	if($scope.place == null){
+		$scope.place = {};
+	}
+	$scope.placeCreate = function(){
+		mooleloService.addPlace(mooleloId,$scope.place);
+	};
 })
 ;
