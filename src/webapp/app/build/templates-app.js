@@ -517,9 +517,6 @@ angular.module("moolelo/create.tpl.html", []).run(["$templateCache", function($t
     "								ng-model=\"moolelo.summary\" columns=\"1\" md-maxlength=\"100\" rows=\"2\"></textarea> </md-input-container>\n" +
     "							<md-input-container class=\"md-block\" flex> <label>Text:</label> <textarea\n" +
     "								ng-model=\"moolelo.text\" columns=\"1\" md-maxlength=\"10000\" rows=\"3\"></textarea> </md-input-container>	\n" +
-    "							<md-button class=\"md-raised md-primary\"> \n" +
-    "								Create\n" +
-    "							</md-button>\n" +
     "						</form>\n" +
     "					</div>\n" +
     "				</md-content> \n" +
@@ -529,9 +526,18 @@ angular.module("moolelo/create.tpl.html", []).run(["$templateCache", function($t
     "				<md-content class=\"md-padding\"> \n" +
     "					<h3>\n" +
     "						List of Places\n" +
-    "						<md-button type=\"button\" ng-click=\"addPlaceDialog($event)\" class=\"md-raised md-primary\">\n" +
-    "						Add Place </md-button>\n" +
     "					</h3>\n" +
+    "					<md-button type=\"button\" ng-click=\"addPlaceDialog($event)\" class=\"md-raised md-primary\">	\n" +
+    "						Add Place \n" +
+    "					</md-button>	\n" +
+    "					<script type=\"text/ng-template\" id=\"control.tpl.html\">\n" +
+    "       				 <button class=\"btn btn-sm btn-primary\" ng-class=\"{'btn-warning': danger}\" ng-click=\"controlClick()\">{{controlText}}</button>\n" +
+    "    				</script>\n" +
+    "					<ui-gmap-google-map center='map.center' zoom='map.zoom' >\n" +
+    "						<ui-gmap-map-control template=\"control.tpl.html\" position=\"top-right\" controller=\"controlCtrl\" index=\"-1\"></ui-gmap-map-control>\n" +
+    "    					</ui-gmap-google-map>					\n" +
+    "					</ui-gmap-google-map>\n" +
+    "					\n" +
     "					<div ng-repeat=\"place in moolelo.places\">\n" +
     "						<div>Place : {{place.name}}</div>\n" +
     "						<div>Island : {{place.island}}</div>\n" +
@@ -557,7 +563,11 @@ angular.module("moolelo/create.tpl.html", []).run(["$templateCache", function($t
     "					</div>\n" +
     "				</md-content> \n" +
     "			</md-tab> \n" +
+    "			<md-button class=\"md-raised md-primary\"> \n" +
+    "				Create Mo'olelo\n" +
+    "			</md-button>\n" +
     "		</md-tabs> \n" +
+    "		\n" +
     "	</md-content>\n" +
     "</div>\n" +
     "");

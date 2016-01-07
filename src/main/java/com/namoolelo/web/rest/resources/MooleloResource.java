@@ -40,13 +40,17 @@ public class MooleloResource extends ResourceSupport{
         moolelo.setText(text);
         moolelo.setSummary(summary);
         moolelo.setEstDate(estDate);
-        moolelo.setPlaces(places);
-        for(Place place : places){
-        	place.setMoolelo(moolelo);
+        if(places != null){
+	        moolelo.setPlaces(places);
+	        for(Place place : places){
+	        	place.setMoolelo(moolelo);
+	        }
         }
-        moolelo.setActors(actors);
-        for(Actor actor : actors){
-        	actor.addMoolelo(moolelo);
+        if(actors != null){
+	        moolelo.setActors(actors);
+	        for(Actor actor : actors){
+	        	actor.addMoolelo(moolelo);
+	        }
         }
         return moolelo;
     }

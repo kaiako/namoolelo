@@ -226,6 +226,14 @@ angular.module('ngBoilerplate.moolelo',[ 'ui.router',
 	if(!$scope.moolelo){
 		$scope.moolelo = {};
 	}
+
+	$scope.map = {
+			center : {
+				latitude : 20.515360,  
+				longitude : -157.465245
+			},
+			zoom : 7
+		};
 	$scope.addPlaceDialog = function($event){
 		$mdDialog.show({
             locals:{moolelo: $scope.moolelo, enums:mooleloService.getEnums()},  

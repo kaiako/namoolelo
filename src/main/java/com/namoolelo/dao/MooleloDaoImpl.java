@@ -23,6 +23,7 @@ public class MooleloDaoImpl extends GenericDaoImpl<Moolelo, Long> implements Moo
 	
 	private Criteria getMooleloCriteria(boolean includePlaces){
 		Criteria criteria = getCriteria();
+		criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		if(includePlaces){
 			criteria.setFetchMode("places", FetchMode.JOIN);
 		}
