@@ -5868,6 +5868,12 @@ h2 {
   color: #555555;
 }
 /**
+ * Google Maps Module
+ */
+.angular-google-map-container {
+  height: 400px;
+}
+/**
  * Now that all app-wide styles have been applied, we can load the styles for
  * all the submodules and components we are using. 
  *

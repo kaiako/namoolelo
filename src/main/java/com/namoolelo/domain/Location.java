@@ -19,10 +19,12 @@ public class Location implements Serializable{
 	
 	private float latitude;
 	private float longitude;
+	private int zoom;
 	
-	public Location(float lat, float lng){
+	public Location(float lat, float lng, int zoom){
 		this.latitude = lat;
 		this.longitude = lng;
+		this.zoom = zoom;
 	}
 	
 }

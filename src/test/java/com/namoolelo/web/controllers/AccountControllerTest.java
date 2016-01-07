@@ -38,11 +38,11 @@ public class AccountControllerTest extends BaseControllerTest{
 	public void setup(){
 		MockitoAnnotations.initMocks(this);
 		super.init("/rest/accounts/1/moolelos",controller);
-		Location location = new Location(1F, 1F);
+		Location location = new Location(1F, 1F, 1);
 		Place place = new Place();
 		place.setName("Test Place");
 		place.setLocation(location);
-		Location location2 = new Location(2F, 2F);
+		Location location2 = new Location(2F, 2F, 2);
 		Place place2 = new Place();
 		place2.setName("Test Place");
 		place2.setLocation(location2);

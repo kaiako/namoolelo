@@ -15,6 +15,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
+import org.springframework.util.Assert;
+
 import lombok.Data;
 
 @Data
@@ -44,5 +46,10 @@ public class Actor implements Identifiable<Long>, Serializable {
 			moolelos = new HashSet<Moolelo>();
 		}
 		return moolelos;
+	}
+
+	public void addMoolelo(Moolelo moolelo) {
+		Assert.notNull(moolelo);
+		getMoolelos().add(moolelo);		
 	}
 }

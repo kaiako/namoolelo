@@ -1,5 +1,9 @@
 package com.namoolelo.domain.enums;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.namoolelo.web.rest.model.serializers.MokuSerializer;
+
+@JsonSerialize(using=MokuSerializer.class)
 public enum Moku {
 //	O'ahu Mokus
 	OAHU_WAIANAE("Wai'anae"),

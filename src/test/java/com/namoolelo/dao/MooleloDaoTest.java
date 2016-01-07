@@ -54,7 +54,7 @@ public class MooleloDaoTest {
 		int size = mooleloDao.getAll().size();
 		ArrayList<Place> places = new ArrayList<Place>();
 		Place place = new Place();
-		place.setLocation(new Location(1.0F,1.0F));
+		place.setLocation(new Location(1.0F,1.0F, 1));
 		place.setName("Test Save Place");
 		places.add(place);
 		Moolelo moolelo = new Moolelo();

@@ -8,7 +8,9 @@ angular.module( 'ngBoilerplate', [
   'ngBoilerplate.place',
   'material.core',
   'ui.router',
-  'hateoas'
+  'hateoas',
+  'uiGmapgoogle-maps',
+  'nemLogging'
 ])
 
 .config( function myAppConfig ( $stateProvider, $urlRouterProvider, HateoasInterceptorProvider) {

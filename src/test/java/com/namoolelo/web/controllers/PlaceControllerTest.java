@@ -44,7 +44,7 @@ public class PlaceControllerTest {
 		place = new Place();
 		place.setId(1L);
 		place.setIsland(Island.OAHU);
-		place.setLocation(new Location(1F,1F));
+		place.setLocation(new Location(1F,1F, 1));
 		place.setMoku(Moku.OAHU_KOOLAULOA);
 		place.setName("Kaneohe");
 		place.setMoolelo(mock(Moolelo.class));

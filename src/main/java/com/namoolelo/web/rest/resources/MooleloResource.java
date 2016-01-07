@@ -1,9 +1,11 @@
 package com.namoolelo.web.rest.resources;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.hateoas.ResourceSupport;
 
+import com.namoolelo.domain.Actor;
 import com.namoolelo.domain.Moolelo;
 import com.namoolelo.domain.Place;
 
@@ -20,6 +22,7 @@ public class MooleloResource extends ResourceSupport{
 	private String summary;
 	private String estDate;
 	private List<Place> places;
+	private Set<Actor> actors;
 
 	public void setMoolelo(Moolelo moolelo){	
 		this.rid = moolelo.getId();
@@ -29,8 +32,6 @@ public class MooleloResource extends ResourceSupport{
 		this.estDate = moolelo.getEstDate();
 		this.places = moolelo.getPlaces();
 	}
-	
-	
 
     public Moolelo toMoolelo() {
         Moolelo moolelo = new Moolelo();
@@ -40,6 +41,13 @@ public class MooleloResource extends ResourceSupport{
         moolelo.setSummary(summary);
         moolelo.setEstDate(estDate);
         moolelo.setPlaces(places);
+        for(Place place : places){
+        	place.setMoolelo(moolelo);
+        }
+        moolelo.setActors(actors);
+        for(Actor actor : actors){
+        	actor.addMoolelo(moolelo);
+        }
         return moolelo;
     }
 

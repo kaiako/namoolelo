@@ -72,7 +72,10 @@ module.exports = {
       'vendor/angular-hateoas/src/angular-hateoas.js',
       'vendor/angular-material/angular-material.min.js',
       'vendor/angular-animate/angular-animate.min.js',
-      'vendor/angular-aria/angular-aria.min.js'
+      'vendor/angular-aria/angular-aria.min.js',
+      'vendor/angular-google-maps/dist/angular-google-maps.min.js',
+      'vendor/angular-simple-logger/dist/angular-simple-logger.min.js',
+      'vendor/lodash/lodash.min.js'
     ],
     css: [
       'vendor/angular-material/angular-material.min.css'

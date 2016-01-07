@@ -24,6 +24,7 @@ import com.namoolelo.service.MooleloService;
 import com.namoolelo.service.PlaceService;
 import com.namoolelo.service.util.MooleloList;
 import com.namoolelo.web.rest.model.Envelope;
+import com.namoolelo.web.rest.model.MooleloEnums;
 import com.namoolelo.web.rest.resources.ActorResource;
 import com.namoolelo.web.rest.resources.MooleloListResource;
 import com.namoolelo.web.rest.resources.PlaceResource;
@@ -51,6 +52,11 @@ public class MooleloController {
 	
 	@Autowired
 	private ActorService actorService;
+	
+	@RequestMapping(value="/enums", method = RequestMethod.GET)
+	public ResponseEntity<MooleloEnums> getEnums(){
+		return new ResponseEntity<MooleloEnums>(MooleloEnums.getInstance(),HttpStatus.OK);
+	}
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<MooleloListResource> findAllMoolelos(@RequestParam(value="title", required = false) String title) {

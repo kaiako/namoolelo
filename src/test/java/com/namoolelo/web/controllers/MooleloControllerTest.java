@@ -56,11 +56,11 @@ public class MooleloControllerTest {
 		baseUrl="/rest/moolelos";
 		account = new Account();
 		account.setId(1L);
-		Location location = new Location(1F, 1F);
+		Location location = new Location(1F, 1F, 1);
 		Place place = new Place();
 		place.setName("Test Place 1");
 		place.setLocation(location);
-		Location location2 = new Location(2F, 2F);
+		Location location2 = new Location(2F, 2F, 1);
 		Place place2 = new Place();
 		place2.setName("Test Place 2");
 		place2.setLocation(location2);
@@ -88,7 +88,7 @@ public class MooleloControllerTest {
 		Place place3 = new Place();
 		place3.setId(1L);
 		place3.setName("Test Place 3");
-		place3.setLocation(new Location(3F, 3F));
+		place3.setLocation(new Location(3F, 3F, 1));
 		place3.setIsland(Island.OAHU);
 		place3.setMoku(Moku.OAHU_KOOLAULOA);
 		String content = mapper.writeValueAsString(place3);

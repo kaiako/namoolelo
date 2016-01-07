@@ -15,16 +15,4 @@ angular.module('ngBoilerplate.place',[ 'ui.router','ngBoilerplate.moolelo'])
 	var service = {};
     return service;
 })
-.controller('CreatePlaceCtrl', function($scope, $state, $stateParams, mooleloService, placeService) {
-	var mooleloId = $stateParams.mooleloId;
-	if(mooleloId == null){
-		$state.go("myMoolelos");
-	}
-	if($scope.place == null){
-		$scope.place = {};
-	}
-	$scope.placeCreate = function(){
-		mooleloService.addPlace(mooleloId,$scope.place);
-	};
-})
 ;
