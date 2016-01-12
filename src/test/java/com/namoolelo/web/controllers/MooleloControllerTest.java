@@ -11,11 +11,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.namoolelo.domain.Account;
-import com.namoolelo.domain.Location;
 import com.namoolelo.domain.Moolelo;
 import com.namoolelo.domain.Place;
 import com.namoolelo.domain.enums.Island;
 import com.namoolelo.domain.enums.Moku;
+import com.namoolelo.domain.locations.Location;
 import com.namoolelo.service.MooleloService;
 import com.namoolelo.service.PlaceService;
 import com.namoolelo.service.util.MooleloList;
@@ -56,14 +56,10 @@ public class MooleloControllerTest {
 		baseUrl="/rest/moolelos";
 		account = new Account();
 		account.setId(1L);
-		Location location = new Location(1F, 1F, 1);
 		Place place = new Place();
 		place.setName("Test Place 1");
-		place.setLocation(location);
-		Location location2 = new Location(2F, 2F, 1);
 		Place place2 = new Place();
 		place2.setName("Test Place 2");
-		place2.setLocation(location2);
 		List<Place> places = new ArrayList<Place>();
 		places.add(place);
 		places.add(place2);
@@ -88,9 +84,6 @@ public class MooleloControllerTest {
 		Place place3 = new Place();
 		place3.setId(1L);
 		place3.setName("Test Place 3");
-		place3.setLocation(new Location(3F, 3F, 1));
-		place3.setIsland(Island.OAHU);
-		place3.setMoku(Moku.OAHU_KOOLAULOA);
 		String content = mapper.writeValueAsString(place3);
 		when(placeService.createPlace(anyLong(),any(Place.class))).thenReturn(place3);
 		mockMvc.perform(post(baseUrl+"/1/places")

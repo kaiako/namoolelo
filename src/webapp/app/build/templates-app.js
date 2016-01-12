@@ -525,27 +525,48 @@ angular.module("moolelo/create.tpl.html", []).run(["$templateCache", function($t
     "			<md-tab label=\"Places\"> \n" +
     "				<md-content class=\"md-padding\"> \n" +
     "					<h3>\n" +
-    "						List of Places\n" +
-    "					</h3>\n" +
-    "					<md-button type=\"button\" ng-click=\"addPlaceDialog($event)\" class=\"md-raised md-primary\">	\n" +
-    "						Add Place \n" +
-    "					</md-button>	\n" +
+    "						List of Places					\n" +
+    "						<md-button type=\"button\" ng-click=\"addPlaceDialog($event)\" class=\"md-raised md-primary\">	\n" +
+    "							Add Place \n" +
+    "						</md-button>\n" +
+    "					</h3>					\n" +
     "					<script type=\"text/ng-template\" id=\"control.tpl.html\">\n" +
-    "       				 <button class=\"btn btn-sm btn-primary\" ng-class=\"{'btn-warning': danger}\" ng-click=\"controlClick()\">{{controlText}}</button>\n" +
-    "    				</script>\n" +
-    "					<ui-gmap-google-map center='map.center' zoom='map.zoom' >\n" +
-    "						<ui-gmap-map-control template=\"control.tpl.html\" position=\"top-right\" controller=\"controlCtrl\" index=\"-1\"></ui-gmap-map-control>\n" +
-    "    					</ui-gmap-google-map>					\n" +
-    "					</ui-gmap-google-map>\n" +
-    "					\n" +
-    "					<div ng-repeat=\"place in moolelo.places\">\n" +
-    "						<div>Place : {{place.name}}</div>\n" +
-    "						<div>Island : {{place.island}}</div>\n" +
-    "						<div>Moku : {{place.moku}}</div>\n" +
-    "						<div>Latitude : {{place.location.latitude}}</div>\n" +
-    "						<div>Longitude : {{place.location.longitude}}</div>\n" +
-    "						<div>Zoom : {{place.location.zoom}}</div>\n" +
+    "					 <div layout-margin> \n" +
+    "       				 	<div id=\"markerControl\" class=\"btn btn-success grabbable\" ng-class=\"{'btn-warning': danger}\"\n" +
+    "							ng-mousemove=\"controlMouseMove($event)\" ng-mousedown=\"controlMouseDown($event)\">							\n" +
+    "							<i class=\"material-icons\">add_location</i>\n" +
+    "							<br/>{{controlText}}\n" +
+    "						</div>\n" +
+    "						<img draggable ng-src=\"assets/google_marker.png\">	\n" +
     "					</div>\n" +
+    "    				</script>\n" +
+    "    				<div layout=\"row\" >\n" +
+    "						<ui-gmap-google-map center='map.center' events='map.events' zoom='map.zoom' control=\"map.control\" flex=\"75\" >\n" +
+    "							<ui-gmap-map-control template=\"control.tpl.html\" position=\"top-right\" controller=\"controlCtrl\" index=\"-1\">\n" +
+    "							</ui-gmap-map-control>		\n" +
+    "							<ui-gmap-marker ng-repeat=\"m in map.markers\" coords=\"m.coords\" icon=\"m.icon\" options=\"m.options\" events=\"m.events\" idkey=\"m.id\"></ui-gmap-marker>		\n" +
+    "						</ui-gmap-google-map>								\n" +
+    "						<div layout=\"column\" flex=\"25\"  >\n" +
+    "							<md-card ng-repeat=\"place in moolelo.places\" layout=\"row\" layout-padding > \n" +
+    "								<md-card-title flex=\"65\"> \n" +
+    "									<md-card-title-text> \n" +
+    "										<ul>\n" +
+    "											<li class=\"\">Place : {{place.name}}</li> \n" +
+    "											<li class=\"\">Island : {{place.island}}</li> \n" +
+    "											<li class=\"\">Moku : {{place.moku}}</li> \n" +
+    "											<li class=\"\">Latitude : {{place.location.latitude}}</li> \n" +
+    "											<li class=\"\">Longitude : {{place.location.longitude}}</li> \n" +
+    "											<li class=\"\">Zoom : {{place.location.zoom}}</li> \n" +
+    "										</ul>\n" +
+    "									</md-card-title-text> \n" +
+    "								</md-card-title> \n" +
+    "								<md-card-actions layout=\"column\" flex=\"35\"> \n" +
+    "									<md-button class=\"md-raised md-primary\">Edit</md-button> \n" +
+    "									<md-button class=\"md-raised md-warn\">Delete</md-button> \n" +
+    "								</md-card-actions> \n" +
+    "							</md-card>\n" +
+    "						</div>\n" +
+    "    				</div>\n" +
     "				</md-content> \n" +
     "			</md-tab> \n" +
     "			\n" +
@@ -664,9 +685,6 @@ angular.module("place/place.tpl.html", []).run(["$templateCache", function($temp
     "					<input type=\"number\" ng-model=\"place.location.longitude\"/>\n" +
     "				</md-input-container>\n" +
     "			</div>\n" +
-    "			<ui-gmap-google-map center='map.center' zoom='map.zoom' >\n" +
-    "				<ui-gmap-marker coords=\"marker.coords\" options=\"marker.options\" events=\"marker.events\" idkey=\"marker.id\"></ui-gmap-marker>\n" +
-    "			</ui-gmap-google-map>\n" +
     "			\n" +
     "		</form>\n" +
     "	</div>\n" +

@@ -3,7 +3,8 @@ package com.namoolelo.domain.enums;
 import lombok.Getter;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.namoolelo.domain.Location;
+import com.namoolelo.domain.GeoCoord;
+import com.namoolelo.domain.locations.Location;
 import com.namoolelo.web.rest.model.serializers.IslandSerializer;
 
 @Getter
@@ -19,11 +20,11 @@ public enum Island {
 	NIIHAU("Ni'ihau",21.8921433F, -160.1574878F, 10);
 	
 	private String name;
-	private Location location;
+	private GeoCoord location;
 	
 	Island(String name, float lat, float lng, int zoom){
 		this.name = name;
-		this.location = new Location(lat, lng, zoom);
+		this.location = new GeoCoord(lat, lng);
 	}
 	
 }

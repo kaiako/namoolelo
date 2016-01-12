@@ -8,11 +8,8 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.namoolelo.domain.Location;
 import com.namoolelo.domain.Moolelo;
 import com.namoolelo.domain.Place;
-import com.namoolelo.domain.enums.Island;
-import com.namoolelo.domain.enums.Moku;
 import com.namoolelo.service.PlaceService;
 import com.namoolelo.service.util.PlaceList;
 import com.namoolelo.web.rest.controllers.PlaceController;
@@ -43,9 +40,6 @@ public class PlaceControllerTest {
 		baseUrl = "/rest/places";
 		place = new Place();
 		place.setId(1L);
-		place.setIsland(Island.OAHU);
-		place.setLocation(new Location(1F,1F, 1));
-		place.setMoku(Moku.OAHU_KOOLAULOA);
 		place.setName("Kaneohe");
 		place.setMoolelo(mock(Moolelo.class));
 	}

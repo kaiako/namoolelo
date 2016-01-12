@@ -24,27 +24,48 @@
 			<md-tab label="Places"> 
 				<md-content class="md-padding"> 
 					<h3>
-						List of Places
-					</h3>
-					<md-button type="button" ng-click="addPlaceDialog($event)" class="md-raised md-primary">	
-						Add Place 
-					</md-button>	
+						List of Places					
+						<md-button type="button" ng-click="addPlaceDialog($event)" class="md-raised md-primary">	
+							Add Place 
+						</md-button>
+					</h3>					
 					<script type="text/ng-template" id="control.tpl.html">
-       				 <button class="btn btn-sm btn-primary" ng-class="{'btn-warning': danger}" ng-click="controlClick()">{{controlText}}</button>
-    				</script>
-					<ui-gmap-google-map center='map.center' zoom='map.zoom' >
-						<ui-gmap-map-control template="control.tpl.html" position="top-right" controller="controlCtrl" index="-1"></ui-gmap-map-control>
-    					</ui-gmap-google-map>					
-					</ui-gmap-google-map>
-					
-					<div ng-repeat="place in moolelo.places">
-						<div>Place : {{place.name}}</div>
-						<div>Island : {{place.island}}</div>
-						<div>Moku : {{place.moku}}</div>
-						<div>Latitude : {{place.location.latitude}}</div>
-						<div>Longitude : {{place.location.longitude}}</div>
-						<div>Zoom : {{place.location.zoom}}</div>
+					 <div layout-margin> 
+       				 	<div id="markerControl" class="btn btn-success grabbable" ng-class="{'btn-warning': danger}"
+							ng-mousemove="controlMouseMove($event)" ng-mousedown="controlMouseDown($event)">							
+							<i class="material-icons">add_location</i>
+							<br/>{{controlText}}
+						</div>
+						<img draggable ng-src="assets/google_marker.png">	
 					</div>
+    				</script>
+    				<div layout="row" >
+						<ui-gmap-google-map center='map.center' events='map.events' zoom='map.zoom' control="map.control" flex="75" >
+							<ui-gmap-map-control template="control.tpl.html" position="top-right" controller="controlCtrl" index="-1">
+							</ui-gmap-map-control>		
+							<ui-gmap-marker ng-repeat="m in map.markers" coords="m.coords" icon="m.icon" options="m.options" events="m.events" idkey="m.id"></ui-gmap-marker>		
+						</ui-gmap-google-map>								
+						<div layout="column" flex="25"  >
+							<md-card ng-repeat="place in moolelo.places" layout="row" layout-padding > 
+								<md-card-title flex="65"> 
+									<md-card-title-text> 
+										<ul>
+											<li class="">Place : {{place.name}}</li> 
+											<li class="">Island : {{place.island}}</li> 
+											<li class="">Moku : {{place.moku}}</li> 
+											<li class="">Latitude : {{place.location.latitude}}</li> 
+											<li class="">Longitude : {{place.location.longitude}}</li> 
+											<li class="">Zoom : {{place.location.zoom}}</li> 
+										</ul>
+									</md-card-title-text> 
+								</md-card-title> 
+								<md-card-actions layout="column" flex="35"> 
+									<md-button class="md-raised md-primary">Edit</md-button> 
+									<md-button class="md-raised md-warn">Delete</md-button> 
+								</md-card-actions> 
+							</md-card>
+						</div>
+    				</div>
 				</md-content> 
 			</md-tab> 
 			

@@ -40,11 +40,6 @@ angular.module('ngBoilerplate.moolelo',[ 'ui.router',
 		},
         data : { pageTitle : "My Mo'olelo" }
 	})
-//	.state('createMoolelo.createPlace', {
-//		url:'/createPlace',
-//		templateUrl:'place/create-place.tpl.html',
-//		controller: 'CreatePlaceCtrl'
-//	})
 	.state('allMoolelos',{
 		url:'/moolelos/search',
 		views: {
@@ -61,9 +56,105 @@ angular.module('ngBoilerplate.moolelo',[ 'ui.router',
         data : { pageTitle : "Mo'olelo Search" }
 	});
 })
+.directive('draggable', function($document, mapService) {
+  return function(scope, element, attr) {
+	var width = 22, height=40;
+	element.css({
+		position : 'fixed',
+		display : 'none',
+		width : width+'px',
+		height : height+'px'
+	});
+	element.addClass('grabbable');
+	element.addClass('unselectable');
+
+	mapService.getMap().dragMarkerStart = function(x, y) {
+		x -= width/2;
+		y -= height;
+		element.css({
+			display : 'block',
+			top : y + 'px',
+			left : x + 'px'
+		});
+	};
+	mapService.getMap().dragMarkerEnd = function() {
+		element.css({
+			display : 'none'
+		});
+	};
+  };
+})
+.factory('mapService', function(uiGmapIsReady){
+	var service = {};
+	function convertPoint(map,latLng) {
+		var topRight = map.getProjection().fromLatLngToPoint(map.getBounds().getNorthEast());
+		var bottomLeft = map.getProjection().fromLatLngToPoint(map.getBounds().getSouthWest());
+		var scale = Math.pow(2, map.getZoom());
+		var worldPoint = map.getProjection().fromLatLngToPoint(latLng);
+		return new google.maps.Point((worldPoint.x - bottomLeft.x) * scale,	(worldPoint.y - topRight.y) * scale);
+	} 
+
+	service.getMap = function(){
+		if(!service.map){
+			service.map = {
+				center : {
+					latitude : 20.515360,  
+					longitude : -157.465245
+				},
+				markers : [],
+				events : {
+					mouseup : function(map, eventName, originalEventArgs) {
+						if(service.map.currentMarker){
+							var marker = service.map.currentMarker;
+							var e = originalEventArgs[0];
+							var lat = e.latLng.lat(), lon = e.latLng
+									.lng();
+							marker.coords = {
+									latitude : lat,
+									longitude : lon
+							};
+							service.map.markers.push(marker);
+							service.map.currentMarker = null;
+							service.map.setMarkerControlHighlight(false);
+							service.map.refreshMap(map);
+							service.map.addPlaceDialog(marker, service.map.zoom);
+						}
+					},
+					mousemove : function(map, eventName, originalEventArgs) {
+						if(service.map.currentMarker){
+							var e = originalEventArgs[0];
+							var latLngInPx = e.pixel;
+							service.map.dragMarkerStart(latLngInPx.x ,latLngInPx.y);
+						}
+					}
+				},
+				control : {},
+				refreshMap: function(){
+					uiGmapIsReady.promise(1).then(function(instances){
+						instances.forEach(function(inst) {
+							var map = inst.map;
+							google.maps.event.trigger(map, 'resize');
+							service.map.dragMarkerEnd();
+						});
+					});				
+				},
+				showMarker : function(){
+					if(service.map.currentMarker){
+						return true;
+					} else {
+						return false;
+					}
+				},
+				zoom : 7
+			};
+		}
+		return service.map;
+	};
+    return service;
+})
 .factory('mooleloService',	function($resource) {
 	var service = {};
-	//Client Side Calls
+	// Client Side Calls
 	service.mooleloMap = {};
 	service.createNewMoolelo = function(moolelo){
 		var id =  Math.floor((Math.random() * 10000) + 1);
@@ -86,6 +177,29 @@ angular.module('ngBoilerplate.moolelo',[ 'ui.router',
 		callback();
 		
 	};
+	service.updateLocation = function(moolelo, markerId, location, callback) {
+		var places = moolelo.places;
+		for (var i = 0; i < places.length; i++) {
+			if (places[i].markerId == markerId) {
+				places[i].location = location;
+			}
+		}
+		if(callback){
+			callback();		
+		}
+	};
+	service.getIsland = function(latLng){
+		var enums = service.getEnums();
+		var islands = enums.islands;
+
+		for (var i = 0; i < islands.length; i++) {
+			var latLngBounds = new google.maps.LatLngBounds(islands[i].northeast, island[i].southeast);
+			if(latLngBounds.contains(latLng)){
+				return island[i];
+			}
+		}
+		return null;
+	};
 	service.getEnums = function() {
 		var MooleloEnums = $resource("/namoolelo/rest/moolelos/enums");
 		if (service.mooleloEnums) {
@@ -95,7 +209,7 @@ angular.module('ngBoilerplate.moolelo',[ 'ui.router',
 		}
 	};
 	
-	//Rest Calls
+	// Rest Calls
 	service.getEnumsCall = function() {
 		var MooleloEnums = $resource("/namoolelo/rest/moolelos/enums");
 		return MooleloEnums.get().$promise.then(function(data){
@@ -103,6 +217,7 @@ angular.module('ngBoilerplate.moolelo',[ 'ui.router',
 			return data;
         });
 	};
+	service.getEnums();
 	service.create = function(accountId,moolelo, success, failure) {
 		var Moolelo = $resource("/namoolelo/rest/accounts/:paramAccountId/moolelos");
 		Moolelo.save({paramAccountId:accountId}, moolelo, success, failure);
@@ -155,64 +270,17 @@ angular.module('ngBoilerplate.moolelo',[ 'ui.router',
 	
 })
 .controller('AddPlaceCtrl', function($scope, $state, $stateParams, $mdDialog, enums, 
-		moolelo, mooleloService, placeService) {
+		moolelo, marker, zoom, mapService, mooleloService, placeService) {
 	var self = this,selectedIsland;
 	$scope.place = {
-			location : {}
-	};	
-	$scope.map = {
-			center : {
-				latitude : 20.515360,  
-				longitude : -157.465245
-			},
-			zoom : 7
-		};
-    $scope.coordsUpdates = 0;
-    $scope.dynamicMoveCtr = 0;
-    $scope.marker = {
-      id: 0,
-      coords : {
-		latitude : 20.515360,
-		longitude : -157.465245
-      },
-      options: { draggable: true },
-      events: {
-        dragend: function (marker, eventName, args) {
-          var lat = marker.getPosition().lat();
-          var lon = marker.getPosition().lng();
-          $scope.place.location.latitude = lat;
-          $scope.place.location.longitude = lon;    
-          $scope.place.location.zoom = $scope.map.zoom;       
-          $scope.marker.options = {
-            draggable: true
-          };
-        }
-      }
-    };
-
-    $scope.$watchCollection("marker.coords", function (newVal, oldVal) {
-      if (_.isEqual(newVal, oldVal)){
-        return;
-      }
-      $scope.coordsUpdates++;
-    });
-	$scope.islands = enums.islands;
-	$scope.selectedIsland = function(){
-		if($scope.place.island){
-			if(selectedIsland != $scope.place.island){				
-				$scope.mokus = enums.mokus[$scope.place.island];
-				$scope.map.center.latitude = $scope.islands[$scope.place.island].location.latitude;
-				$scope.map.center.longitude = $scope.islands[$scope.place.island].location.longitude;
-				$scope.map.zoom = $scope.islands[$scope.place.island].location.zoom;
-				$scope.marker.coords.latitude = $scope.islands[$scope.place.island].location.latitude;
-				$scope.marker.coords.longitude = $scope.islands[$scope.place.island].location.longitude;
-				selectedIsland = $scope.place.island;
+			markerId : marker.id,
+			location : {
+				latitude : marker.coords.latitude,
+				longitude : marker.coords.longitude,
+				zoom : zoom
 			}
-			return true;
-		} else {
-			return false;
-		}
-	};
+	};	
+	$scope.islands = enums.islands;
 	self.placeAdd = function(){
 		mooleloService.addPlace(moolelo,$scope.place, function(){
 			$mdDialog.cancel();
@@ -222,26 +290,21 @@ angular.module('ngBoilerplate.moolelo',[ 'ui.router',
 		$mdDialog.cancel();
 	};
 })
-.controller('CreateMooleloCtrl',function($scope, $state, $mdDialog, mooleloService, sessionService) {
+.controller('CreateMooleloCtrl',function($scope, $state, $mdDialog, 
+		mapService, mooleloService, sessionService) {
 	if(!$scope.moolelo){
 		$scope.moolelo = {};
 	}
 
-	$scope.map = {
-			center : {
-				latitude : 20.515360,  
-				longitude : -157.465245
-			},
-			zoom : 7
-		};
-	$scope.addPlaceDialog = function($event){
+	$scope.map = mapService.getMap();
+	$scope.map.moolelo = $scope.moolelo;
+	$scope.map.addPlaceDialog = function(marker, zoom){
 		$mdDialog.show({
-            locals:{moolelo: $scope.moolelo, enums:mooleloService.getEnums()},  
+            locals:{moolelo: $scope.moolelo, marker : marker, zoom:zoom, enums:mooleloService.getEnums()},  
 			controller : 'AddPlaceCtrl',
 			controllerAs: "placeCtrl",
 			templateUrl : 'place/place.tpl.html',
 			parent : angular.element(document.body),
-			targetEvent : $event,
 			clickOutsideToClose : true
 		});
 	};
@@ -256,6 +319,37 @@ angular.module('ngBoilerplate.moolelo',[ 'ui.router',
 				alert("System Error! Mo'olelo not created!");
 			}			
 		});
+	};
+	$scope.showTempMarker = mapService.map.showMarker();
+})
+.controller('controlCtrl', function($scope, mapService, mooleloService) {
+	$scope.map = mapService.getMap();
+	$scope.controlText = 'Add a Place';
+	$scope.danger = false;
+	$scope.map.setMarkerControlHighlight = function(toggle) {
+		$scope.danger = toggle;
+	};
+	
+	$scope.controlMouseDown = function($event) {
+		var markerId = $scope.map.markers.length+1;
+		var marker = {
+            id: markerId,
+			options : {
+				draggable:true
+			},
+			events:{
+				dragend : function(marker2, eventName, args) {
+					var location = {
+								latitude : marker2.position.lat(),
+								longitude : marker2.position.lng(),
+								zoom : $scope.map.zoom
+							};
+					mooleloService.updateLocation($scope.map.moolelo,markerId,location, null);
+				}				
+			}
+        };
+        $scope.map.currentMarker = marker;
+		$scope.danger = true;		
 	};
 })
 ;

@@ -13,7 +13,6 @@ import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
 import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 import com.namoolelo.dbunit.XLSDataSetLoader;
-import com.namoolelo.domain.Location;
 import com.namoolelo.domain.Place;
 import com.namoolelo.domain.Moolelo;
 import static org.junit.Assert.*;
@@ -54,7 +53,6 @@ public class MooleloDaoTest {
 		int size = mooleloDao.getAll().size();
 		ArrayList<Place> places = new ArrayList<Place>();
 		Place place = new Place();
-		place.setLocation(new Location(1.0F,1.0F, 1));
 		place.setName("Test Save Place");
 		places.add(place);
 		Moolelo moolelo = new Moolelo();

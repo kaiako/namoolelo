@@ -112,9 +112,34 @@ h2 {
 }
 
 /**
+ * Main
+ */
+.main-container{
+	margin : 0 auto;
+	max-width : 1400px;
+}
+/**
  * Google Maps Module
  */
 .angular-google-map-container { height: 400px; }
+.grabbable {
+    cursor: move; /* fallback if grab cursor is unsupported */
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+}
+.grabbing, .grabbable:active { 
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+}
+.unselectable {
+   -moz-user-select: -moz-none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+   -ms-user-select: none;
+   user-select: none;
+}
 
 /**
  * Now that all app-wide styles have been applied, we can load the styles for
