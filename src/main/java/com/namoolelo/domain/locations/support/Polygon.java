@@ -1,12 +1,15 @@
 package com.namoolelo.domain.locations.support;
 
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Transient;
 
 import com.namoolelo.domain.Identifiable;
@@ -16,7 +19,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-@Entity
+@Entity(name="Location_polygon")
 public class Polygon implements Identifiable<Long>, Serializable {
 
 	/**
@@ -27,8 +30,10 @@ public class Polygon implements Identifiable<Long>, Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Transient
-	private double PI = Math.PI;
-    private ArrayList<GeoCoord> coords;
+	private double PI = Math.PI;  
+	@ElementCollection
+    @CollectionTable(name="polygon_coords", joinColumns=@JoinColumn(name="polygon_id"))
+    private List<GeoCoord> coords;
 
 	public boolean contains(GeoCoord point)
 		{      double latitude = point.getLatitude();
