@@ -1,8 +1,11 @@
-package com.namoolelo.domain;
+package com.namoolelo.domain.locations.coords;
 
 import java.io.Serializable;
 
 import javax.persistence.Embeddable;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.javadocmd.simplelatlng.LatLng;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,10 +22,19 @@ public class GeoCoord implements Serializable{
 	
 	private float latitude;
 	private float longitude;
+	@JsonIgnore
+	private LatLng latLng;
 	
 	public GeoCoord(float lat, float lng){
 		this.latitude = lat;
 		this.longitude = lng;
+	}
+	
+	public LatLng getLatLng(){
+		if(latLng == null){
+			latLng = new LatLng(latitude, longitude);
+		}
+		return latLng;
 	}
 	
 }
