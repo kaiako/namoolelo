@@ -1,11 +1,32 @@
 package com.namoolelo.domain.locations.support;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-import com.namoolelo.domain.locations.coords.GeoCoord;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Transient;
 
-public class Polygon {
+import com.namoolelo.domain.Identifiable;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@Entity
+public class Polygon implements Identifiable<Long>, Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7212974507343954941L;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@Transient
 	private double PI = Math.PI;
     private ArrayList<GeoCoord> coords;
 

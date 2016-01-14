@@ -25,7 +25,7 @@
                 <prop key="hibernate.show_sql">${hibernate.showSql:false}</prop>
                 
                 <!-- NEVER EVER HAVE THIS LINE ENABLED IN PROD -->
-<!--                 <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl:update}</prop> -->
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl:update}</prop>
                 
                 <prop key="hibernate.c3p0.min_size">${hibernate.c3p0.minSize:3}</prop>
                 <prop key="hibernate.c3p0.max_size">${hibernate.c3p0.maxSize:5}</prop>

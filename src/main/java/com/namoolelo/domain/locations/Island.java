@@ -3,14 +3,22 @@ package com.namoolelo.domain.locations;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import com.javadocmd.simplelatlng.window.RectangularWindow;
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
 import com.namoolelo.domain.enums.CoordType;
 import com.namoolelo.domain.enums.LocationType;
-import com.namoolelo.domain.locations.coords.GeoBounds;
-import com.namoolelo.domain.locations.coords.GeoCoord;
+import com.namoolelo.domain.locations.support.GeoBounds;
+import com.namoolelo.domain.locations.support.GeoCoord;
 
 @Data
 @NoArgsConstructor
+@Entity(name="location_island")
 public class Island implements Location{
 
 	/**
@@ -18,15 +26,25 @@ public class Island implements Location{
 	 */
 	private static final long serialVersionUID = 611291506102588798L;
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
+	@AttributeOverrides({
+		@AttributeOverride(name="northeast.latitude",
+			column=@Column(name="ne_lat")),
+		@AttributeOverride(name="northeast.longitude",
+        	column=@Column(name="ne_lng")),
+		@AttributeOverride(name="southwest.latitude",
+        	column=@Column(name="sw_lat")),
+		@AttributeOverride(name="southwest.longitude",
+        	column=@Column(name="sw_lng"))
+	})
 	private GeoBounds bounds;
-	private RectangularWindow window;
 	
 	public Island(String name, GeoCoord northeast, GeoCoord southwest){
 		this.name = name;
 		this.bounds = new GeoBounds(northeast, southwest);
-		this.window = new RectangularWindow(northeast.getLatLng(), southwest.getLatLng());
 	}
 	
 	public Island(String name, float neLat, float neLng, float swLat, float swLng){
@@ -34,7 +52,6 @@ public class Island implements Location{
 		GeoCoord northeast = new GeoCoord(neLat, neLng);
 		GeoCoord southwest = new GeoCoord(swLat, swLng);
 		this.bounds = new GeoBounds(northeast, southwest);
-		this.window = new RectangularWindow(northeast.getLatLng(), southwest.getLatLng());
 	}
 	
 	@Override
@@ -43,13 +60,13 @@ public class Island implements Location{
 	}
 
 	@Override
-	public boolean contains(GeoCoord coords) {
-		return window.contains(coords.getLatLng());
+	public CoordType getCoordType() {
+		return CoordType.BOUNDS;
 	}
 
 	@Override
-	public CoordType getCoordType() {
-		return CoordType.BOUNDS;
+	public boolean contains(GeoCoord coord) {
+		return bounds.contains(coord);
 	}
 
 }

@@ -3,8 +3,7 @@ package com.namoolelo.domain.enums;
 import lombok.Getter;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.namoolelo.domain.locations.Location;
-import com.namoolelo.domain.locations.coords.GeoCoord;
+import com.namoolelo.domain.locations.support.GeoCoord;
 import com.namoolelo.web.rest.model.serializers.IslandSerializer;
 
 @Getter
