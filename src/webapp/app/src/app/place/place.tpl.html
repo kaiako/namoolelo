@@ -1,4 +1,4 @@
-<md-dialog aria-label="Create New Place" flex="90"> 
+<md-dialog aria-label="Create New Place" > 
 <md-toolbar>
 	<div class="md-toolbar-tools">
 		<h2>Create New Place</h2>
@@ -9,41 +9,22 @@
 <md-dialog-content>
 	<div class="md-dialog-content" layout="column">
 		<form ng-submit="$event.preventDefault()">
-			<div layout="row" layout-padding>
-				<md-input-container flex>
-					<label>Name: </label> 
-					<input type="text" ng-model="place.name"/>
-				</md-input-container>
-				<md-input-container flex>
-					<label>Island:</label> 
-					<md-select ng-model="place.island">
-						<md-option value=""> -Select One-</md-option>
-						<md-option ng-repeat="island in islands" value="{{island.value}}">{{island.name}}</md-option>
-					</md-select>
-				</md-input-container>
-				<md-input-container flex ng-show="selectedIsland()">
-					<label>Moku:</label> 
-					<md-select ng-model="place.moku">
-						<md-option value=""> -Select One-</md-option>
-						<md-option ng-repeat="moku in mokus" value="{{moku.value}}">{{moku.name}}</md-option>
-					</md-select>
-				</md-input-container>
-			</div>
-			<div layout="row" layout-padding>
-				<md-input-container flex>
-					<label>Latitude:</label> 
-					<input type="number" ng-model="place.location.latitude"/>
-				</md-input-container>
-				<md-input-container flex>
-					<label>Longitude:</label> 
-					<input type="number" ng-model="place.location.longitude"/>
-				</md-input-container>
-			</div>
-			
+			<md-input-container flex>
+				<label>Name: </label> 
+				<input type="text" ng-model="place.name"/>
+			</md-input-container>
+			<md-content>
+				<h4>Island : {{place.island}}</h4>
+				<h4>Moku : {{place.moku}}</h4>
+				<h4>Latitude : {{place.location.latitude}}</h4>
+				<h4>Longitude : {{place.location.longitude}}</h4>
+				<h4>Zoom : {{place.location.zoom}}</h4> 
+			</md-content>			
 		</form>
 	</div>
 </md-dialog-content>
 <div class="md-actions">
-	<md-button aria-label="Finished" ng-click="placeCtrl.placeAdd()">Add</md-button>
+	<md-button aria-label="Add" ng-show="isPlaceAdd" ng-click="placeCtrl.placeAdd()">Add</md-button>
+	<md-button aria-label="Save" ng-hide="isPlaceAdd" ng-click="placeCtrl.placeSave()">Save</md-button>
 </div>
 </md-dialog>

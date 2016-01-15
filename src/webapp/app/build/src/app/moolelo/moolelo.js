@@ -116,7 +116,7 @@ angular.module('ngBoilerplate.moolelo',[ 'ui.router',
 							service.map.markers.push(marker);
 							service.map.currentMarker = null;
 							service.map.setMarkerControlHighlight(false);
-							service.map.refreshMap(map);
+							service.map.refreshMap();
 							service.map.addPlaceDialog(marker, service.map.zoom);
 						}
 					},
@@ -145,6 +145,14 @@ angular.module('ngBoilerplate.moolelo',[ 'ui.router',
 						return false;
 					}
 				},
+				removeMarker : function(marker){
+					var array = service.map.markers;
+					var index = array.indexOf(marker);
+					if (index > -1) {
+						array.splice(index, 1);
+						service.map.refreshMap();
+					}
+				},
 				zoom : 7
 			};
 		}
@@ -155,6 +163,7 @@ angular.module('ngBoilerplate.moolelo',[ 'ui.router',
 .factory('mooleloService',	function($resource) {
 	var service = {};
 	// Client Side Calls
+	service.placeAdded=false;
 	service.mooleloMap = {};
 	service.createNewMoolelo = function(moolelo){
 		var id =  Math.floor((Math.random() * 10000) + 1);
@@ -174,13 +183,14 @@ angular.module('ngBoilerplate.moolelo',[ 'ui.router',
 			moolelo.places = places;
 		}
 		places.push(place);
+		service.placeAdded=true;
 		callback();
 		
 	};
 	service.updateLocation = function(moolelo, markerId, location, callback) {
 		var places = moolelo.places;
 		for (var i = 0; i < places.length; i++) {
-			if (places[i].markerId == markerId) {
+			if (places[i].marker.id == markerId) {
 				places[i].location = location;
 			}
 		}
@@ -272,8 +282,9 @@ angular.module('ngBoilerplate.moolelo',[ 'ui.router',
 .controller('AddPlaceCtrl', function($scope, $state, $stateParams, $mdDialog, enums, 
 		moolelo, marker, zoom, mapService, mooleloService, placeService) {
 	var self = this,selectedIsland;
+	$scope.isPlaceAdd = true;
 	$scope.place = {
-			markerId : marker.id,
+			marker : marker,
 			location : {
 				latitude : marker.coords.latitude,
 				longitude : marker.coords.longitude,
@@ -281,12 +292,32 @@ angular.module('ngBoilerplate.moolelo',[ 'ui.router',
 			}
 	};	
 	$scope.islands = enums.islands;
+	mooleloService.placeAdded=false;
 	self.placeAdd = function(){
 		mooleloService.addPlace(moolelo,$scope.place, function(){
+			marker.label = $scope.place.name;
+			mapService.map.refreshMap();
 			$mdDialog.cancel();
 		});
 	};
-	self.cancel = function($event){
+	self.cancel = function(){
+		$mdDialog.cancel();
+	};
+})
+.controller('EditPlaceCtrl', function($scope, $mdDialog, place) {
+	var self = this;
+	$scope.place = {
+		name : place.name,
+		island : place.island,
+		moku : place.moku,
+		location : place.location
+	};	
+	$scope.isPlaceAdd = false;
+	self.placeSave = function(){
+		place.name = $scope.place.name;
+		$mdDialog.cancel();
+	};
+	self.cancel = function(){
 		$mdDialog.cancel();
 	};
 })
@@ -300,13 +331,40 @@ angular.module('ngBoilerplate.moolelo',[ 'ui.router',
 	$scope.map.moolelo = $scope.moolelo;
 	$scope.map.addPlaceDialog = function(marker, zoom){
 		$mdDialog.show({
-            locals:{moolelo: $scope.moolelo, marker : marker, zoom:zoom, enums:mooleloService.getEnums()},  
+            locals:{moolelo: $scope.moolelo, marker : marker, zoom:zoom,enums:mooleloService.getEnums()},  
 			controller : 'AddPlaceCtrl',
+			controllerAs: "placeCtrl",
+			templateUrl : 'place/place.tpl.html',
+			parent : angular.element(document.body),
+			clickOutsideToClose : true,
+			onRemoving : function(scope, element, options) {
+				if(!mooleloService.placeAdded){
+					mapService.map.removeMarker(marker);
+				}
+			}
+		});
+	};
+	$scope.editPlace = function(place){
+		$mdDialog.show({
+            locals:{place:place},  
+			controller : 'EditPlaceCtrl',
 			controllerAs: "placeCtrl",
 			templateUrl : 'place/place.tpl.html',
 			parent : angular.element(document.body),
 			clickOutsideToClose : true
 		});
+	};
+	$scope.removePlace = function(place,placeIndex){
+		var confirm = $mdDialog.confirm()
+			.title('Remove Place : '+place.name)
+			.content('Are you sure you want to REMOVE this place?')
+			.ok('Yes')
+			.cancel('No');
+		$mdDialog.show(confirm)
+			.then(function() {
+				$scope.moolelo.places.splice(placeIndex,1);
+				mapService.map.removeMarker(place.marker);		
+			});
 	};
 	$scope.mooleloCreate = function() {
 		var accountId = sessionService.getAccountId();

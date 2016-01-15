@@ -546,23 +546,21 @@ angular.module("moolelo/create.tpl.html", []).run(["$templateCache", function($t
     "							</ui-gmap-map-control>		\n" +
     "							<ui-gmap-marker ng-repeat=\"m in map.markers\" coords=\"m.coords\" icon=\"m.icon\" options=\"m.options\" events=\"m.events\" idkey=\"m.id\"></ui-gmap-marker>		\n" +
     "						</ui-gmap-google-map>								\n" +
-    "						<div layout=\"column\" flex=\"25\"  >\n" +
-    "							<md-card ng-repeat=\"place in moolelo.places\" layout=\"row\" layout-padding > \n" +
-    "								<md-card-title flex=\"65\"> \n" +
+    "						<div flex=\"25\"  >\n" +
+    "							<md-card ng-repeat=\"place in moolelo.places\" layout=\"column\" layout-padding > \n" +
+    "								<md-card-title> \n" +
     "									<md-card-title-text> \n" +
-    "										<ul>\n" +
-    "											<li class=\"\">Place : {{place.name}}</li> \n" +
-    "											<li class=\"\">Island : {{place.island}}</li> \n" +
-    "											<li class=\"\">Moku : {{place.moku}}</li> \n" +
-    "											<li class=\"\">Latitude : {{place.location.latitude}}</li> \n" +
-    "											<li class=\"\">Longitude : {{place.location.longitude}}</li> \n" +
-    "											<li class=\"\">Zoom : {{place.location.zoom}}</li> \n" +
-    "										</ul>\n" +
+    "										<h3>Place : {{place.name}}</h3>\n" +
+    "										<div>Island : {{place.island}}</div> \n" +
+    "										<div>Moku : {{place.moku}}</div> \n" +
+    "										<div>Latitude : {{place.location.latitude}}</div> \n" +
+    "										<div>Longitude : {{place.location.longitude}}</div> \n" +
+    "										<div>Zoom : {{place.location.zoom}}</div> \n" +
     "									</md-card-title-text> \n" +
     "								</md-card-title> \n" +
-    "								<md-card-actions layout=\"column\" flex=\"35\"> \n" +
-    "									<md-button class=\"md-raised md-primary\">Edit</md-button> \n" +
-    "									<md-button class=\"md-raised md-warn\">Delete</md-button> \n" +
+    "								<md-card-actions layout=\"row\"> \n" +
+    "									<md-button ng-click=\"editPlace(place)\" class=\"md-raised md-primary\">Edit</md-button> \n" +
+    "									<md-button ng-click=\"removePlace(place,$Index)\" class=\"md-raised md-warn\">Remove</md-button> \n" +
     "								</md-card-actions> \n" +
     "							</md-card>\n" +
     "						</div>\n" +
@@ -644,7 +642,7 @@ angular.module("moolelo/search.tpl.html", []).run(["$templateCache", function($t
 
 angular.module("place/place.tpl.html", []).run(["$templateCache", function($templateCache) {
   $templateCache.put("place/place.tpl.html",
-    "<md-dialog aria-label=\"Create New Place\" flex=\"90\"> \n" +
+    "<md-dialog aria-label=\"Create New Place\" > \n" +
     "<md-toolbar>\n" +
     "	<div class=\"md-toolbar-tools\">\n" +
     "		<h2>Create New Place</h2>\n" +
@@ -655,42 +653,23 @@ angular.module("place/place.tpl.html", []).run(["$templateCache", function($temp
     "<md-dialog-content>\n" +
     "	<div class=\"md-dialog-content\" layout=\"column\">\n" +
     "		<form ng-submit=\"$event.preventDefault()\">\n" +
-    "			<div layout=\"row\" layout-padding>\n" +
-    "				<md-input-container flex>\n" +
-    "					<label>Name: </label> \n" +
-    "					<input type=\"text\" ng-model=\"place.name\"/>\n" +
-    "				</md-input-container>\n" +
-    "				<md-input-container flex>\n" +
-    "					<label>Island:</label> \n" +
-    "					<md-select ng-model=\"place.island\">\n" +
-    "						<md-option value=\"\"> -Select One-</md-option>\n" +
-    "						<md-option ng-repeat=\"island in islands\" value=\"{{island.value}}\">{{island.name}}</md-option>\n" +
-    "					</md-select>\n" +
-    "				</md-input-container>\n" +
-    "				<md-input-container flex ng-show=\"selectedIsland()\">\n" +
-    "					<label>Moku:</label> \n" +
-    "					<md-select ng-model=\"place.moku\">\n" +
-    "						<md-option value=\"\"> -Select One-</md-option>\n" +
-    "						<md-option ng-repeat=\"moku in mokus\" value=\"{{moku.value}}\">{{moku.name}}</md-option>\n" +
-    "					</md-select>\n" +
-    "				</md-input-container>\n" +
-    "			</div>\n" +
-    "			<div layout=\"row\" layout-padding>\n" +
-    "				<md-input-container flex>\n" +
-    "					<label>Latitude:</label> \n" +
-    "					<input type=\"number\" ng-model=\"place.location.latitude\"/>\n" +
-    "				</md-input-container>\n" +
-    "				<md-input-container flex>\n" +
-    "					<label>Longitude:</label> \n" +
-    "					<input type=\"number\" ng-model=\"place.location.longitude\"/>\n" +
-    "				</md-input-container>\n" +
-    "			</div>\n" +
-    "			\n" +
+    "			<md-input-container flex>\n" +
+    "				<label>Name: </label> \n" +
+    "				<input type=\"text\" ng-model=\"place.name\"/>\n" +
+    "			</md-input-container>\n" +
+    "			<md-content>\n" +
+    "				<h4>Island : {{place.island}}</h4>\n" +
+    "				<h4>Moku : {{place.moku}}</h4>\n" +
+    "				<h4>Latitude : {{place.location.latitude}}</h4>\n" +
+    "				<h4>Longitude : {{place.location.longitude}}</h4>\n" +
+    "				<h4>Zoom : {{place.location.zoom}}</h4> \n" +
+    "			</md-content>			\n" +
     "		</form>\n" +
     "	</div>\n" +
     "</md-dialog-content>\n" +
     "<div class=\"md-actions\">\n" +
-    "	<md-button aria-label=\"Finished\" ng-click=\"placeCtrl.placeAdd()\">Add</md-button>\n" +
+    "	<md-button aria-label=\"Add\" ng-show=\"isPlaceAdd\" ng-click=\"placeCtrl.placeAdd()\">Add</md-button>\n" +
+    "	<md-button aria-label=\"Save\" ng-hide=\"isPlaceAdd\" ng-click=\"placeCtrl.placeSave()\">Save</md-button>\n" +
     "</div>\n" +
     "</md-dialog>");
 }]);

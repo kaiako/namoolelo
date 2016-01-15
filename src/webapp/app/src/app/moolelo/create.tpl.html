@@ -45,23 +45,21 @@
 							</ui-gmap-map-control>		
 							<ui-gmap-marker ng-repeat="m in map.markers" coords="m.coords" icon="m.icon" options="m.options" events="m.events" idkey="m.id"></ui-gmap-marker>		
 						</ui-gmap-google-map>								
-						<div layout="column" flex="25"  >
-							<md-card ng-repeat="place in moolelo.places" layout="row" layout-padding > 
-								<md-card-title flex="65"> 
+						<div flex="25"  >
+							<md-card ng-repeat="place in moolelo.places" layout="column" layout-padding > 
+								<md-card-title> 
 									<md-card-title-text> 
-										<ul>
-											<li class="">Place : {{place.name}}</li> 
-											<li class="">Island : {{place.island}}</li> 
-											<li class="">Moku : {{place.moku}}</li> 
-											<li class="">Latitude : {{place.location.latitude}}</li> 
-											<li class="">Longitude : {{place.location.longitude}}</li> 
-											<li class="">Zoom : {{place.location.zoom}}</li> 
-										</ul>
+										<h3>Place : {{place.name}}</h3>
+										<div>Island : {{place.island}}</div> 
+										<div>Moku : {{place.moku}}</div> 
+										<div>Latitude : {{place.location.latitude}}</div> 
+										<div>Longitude : {{place.location.longitude}}</div> 
+										<div>Zoom : {{place.location.zoom}}</div> 
 									</md-card-title-text> 
 								</md-card-title> 
-								<md-card-actions layout="column" flex="35"> 
-									<md-button class="md-raised md-primary">Edit</md-button> 
-									<md-button class="md-raised md-warn">Delete</md-button> 
+								<md-card-actions layout="row"> 
+									<md-button ng-click="editPlace(place)" class="md-raised md-primary">Edit</md-button> 
+									<md-button ng-click="removePlace(place,$Index)" class="md-raised md-warn">Remove</md-button> 
 								</md-card-actions> 
 							</md-card>
 						</div>
