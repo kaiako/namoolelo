@@ -29,6 +29,7 @@ public class PlaceController {
 	
 	@RequestMapping(method=RequestMethod.GET)
 	public ResponseEntity<PlaceListResource> findAllPlaces(){
+		log.info("Find all places");
 		PlaceList list = placeService.findAllPlaces();
 		PlaceListResource res = new PlaceListResourceAsm().toResource(list);
 		return new ResponseEntity<PlaceListResource>(res, HttpStatus.OK);

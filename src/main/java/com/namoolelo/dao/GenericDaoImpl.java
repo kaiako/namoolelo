@@ -18,7 +18,7 @@ public abstract class GenericDaoImpl<T extends Serializable & Identifiable<I>, I
 	private Class<T> type;
 	
 	@Autowired
-	private SessionFactory sessionFactory;
+	protected SessionFactory sessionFactory;
 	
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;

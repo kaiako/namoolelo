@@ -15,14 +15,12 @@ public class LocationServiceImpl implements LocationService {
 	
 	@Override
 	public List<Island> getAllIslands() {
-		// TODO Auto-generated method stub
-		return null;
+		return locationDao.getAllIslands();
 	}
 
 	@Override
 	public List<Moku> getAllMokus() {
-		// TODO Auto-generated method stub
-		return null;
+		return locationDao.getAllMokus();
 	}
 
 }
